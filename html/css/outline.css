@@ -1,0 +1,155 @@
+html, body {
+    min-width: 100%;
+    min-height: 100%;
+    background-color: #333;
+    background-image: url("../images/metal003.gif");
+    background-repeat: repeat;
+}
+
+
+h1{
+    font-size:1em;
+    margin:0;
+    padding:5px;
+}
+
+h2{
+    font-size:2em;
+    padding:3px;
+    text-align:center;
+}
+
+h3{
+    font-size:3em;
+    margin:20px;
+    padding:5px;
+    font-family: "Arial Black";
+    text-align:center;
+    color: #fff;
+    -webkit-text-stroke: 2px black;
+}
+
+p {
+    padding: 10px; 10px;
+    line-height: 1.5;
+    font-size: 14px;
+    text-align:left;
+    
+}
+
+.container{
+    width:100%;
+    height:100%;
+    top:40px;
+    position:relative;
+}
+
+.content{
+    width:75%;
+    height:100%;
+    margin:0 auto;
+    padding: 15px;
+    padding-bottom:30px;
+    color: #000;
+    border:3px solid #000;
+    background-color: #eee;
+    background-image: url("../images/comp010.jpg");
+    background-repeat: repeat;
+    
+}
+
+.content table {
+    border-collapse: collapse;
+    margin: 0px auto;
+    align: center;
+    width: 95%;
+    table-layout:fixed;
+    position:relative;
+    z-index:0;
+}
+
+.content th, td {
+    border: 1px solid #000;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+.content th.topic {width:60%;font-weight:bold;}
+.content th.post {width:10%;font-weight:bold;}
+.content th.comment {width:10%;font-weight:bold;}
+.content th.lastPost {width:20%;font-weight:bold;}
+
+.content caption {
+    padding: 1em;
+    font-size: 16px;
+}
+
+
+ul {
+    position:fixed;
+    z-index:10;
+    height:35px;
+    top:0;
+    width:100%;
+    background: #000;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-bottom: 1px solid lightgray;
+}
+
+ul li a{
+    display:block;
+    float:right;
+    width: 60px;
+    height: 100%;
+    padding: 10px 10px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    background-color:#333;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+ul li input[type=text] {
+    float:right;
+    width: 200px;
+    padding: 5px 15px;
+    margin: 4px;
+    font-size: 12px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn {
+    margin: 2px 0px;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+    border-radius: 8px;
+    font-family: Arial;
+    color: #fcfcfc;
+    font-size: 12px;
+    padding: 8px 0px;
+    background: #919496;
+    border: solid #272e33 1px;
+    text-decoration: none;
+}
+
+
+footer {
+    position:relative;
+    height:20px;
+    width:100%;
+    margin-top:80px;
+    background: #000;
+    color:#fff;
+    text-align:center;
+    padding:5px;
+}
