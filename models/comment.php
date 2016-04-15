@@ -84,7 +84,28 @@ class Comment {
 			die("Couldn't delete comment: " . $this->commentID . " Because " . mysqli_error($db));
 		}
 	}
+//----------------------------------------------GET STUFF--------------------------------------------
 
+	public function GetPost(){
+		$db = GetDB();
+
+
+		$query =  "SELECT * FROM `post_comment` WHERE `commentID` = {$this->commentID}";
+
+		
+		$result = $db->query($query);
+		if($result->num_rows != 0){
+			$post = $result->fetch_array(MYSQLI_BOTH);
+
+			$post = new Post($post['postID']);
+			return $post;
+		}
+		else{
+			die("Couldn't find post for commentID: " . $this->commentID);
+		}
+	}
+
+//----------------------------------------------ADD STUFF--------------------------------------------
 }
 
 ?>

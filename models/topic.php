@@ -75,7 +75,48 @@ class Topic {
 			die("Couldn't delete topic: " . $this->topicID . " Because " . mysqli_error($db));
 		}
 	}
+//----------------------------------------------GET STUFF--------------------------------------------
+	public function GetPosts(){
 
+			$query = "SELECT * FROM `topic_post` WHERE `topicID` = {$this->topicID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetModerators(){
+
+			$query = "SELECT * FROM `user_moderator` WHERE `topicID` = {$this->topicID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['userID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+//----------------------------------------------ADD STUFF--------------------------------------------
 }
 
 ?>
