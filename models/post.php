@@ -90,7 +90,66 @@ class Post {
 			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
 		}
 	}
+//----------------------------------------------GET STUFF--------------------------------------------
+	public function GetComments(){
 
+			$query = "SELECT * FROM `post_comment` WHERE `postID` = {$this->postID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Comment($row['commentID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetTopic(){
+		$db = GetDB();
+
+
+		$query =  "SELECT * FROM `topic_post` WHERE `postID` = {$this->postID}";
+
+		
+		$result = $db->query($query);
+		if($result->num_rows != 0){
+			$topic = $result->fetch_array(MYSQLI_BOTH);
+
+			$topic = new Topic($topic['topicID']);
+			return $topic;
+		}
+		else{
+			die("Couldn't find topic for postiD: " . $this->postID);
+		}
+	}
+
+	public function GetUser(){
+		$db = GetDB();
+
+
+		$query =  "SELECT * FROM `user_post` WHERE `postID` = {$this->postID}";
+
+		
+		$result = $db->query($query);
+		if($result->num_rows != 0){
+			$user = $result->fetch_array(MYSQLI_BOTH);
+
+			$user = new User($user['userID']);
+			return $user;
+		}
+		else{
+			die("Couldn't find user for postiD: " . $this->postID);
+		}
+	}
+
+//----------------------------------------------ADD STUFF--------------------------------------------
 }
 
 ?>
