@@ -116,7 +116,7 @@ li a:hover:not(.active) {
     background-color: #111;
 }
 
-ul li input[type=text] {
+input[type=text], input[type=password] {
     float:right;
     width: 200px;
     padding: 5px 15px;
@@ -136,12 +136,16 @@ ul li input[type=text] {
     font-family: Arial;
     color: #fcfcfc;
     font-size: 12px;
-    padding: 8px 0px;
+    padding: 8px 5px;
     background: #919496;
     border: solid #272e33 1px;
     text-decoration: none;
 }
 
+.btn:hover {
+    background: #000;
+    text-decoration: none;
+}
 
 footer {
     position:relative;
