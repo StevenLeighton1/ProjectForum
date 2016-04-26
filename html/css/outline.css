@@ -103,49 +103,27 @@ ul {
 ul li a{
     display:block;
     float:right;
-    width: 60px;
     height: 100%;
-    padding: 10px 10px;
     text-align: center;
     color: #fff;
+    padding: 10px 10px;
     text-decoration: none;
     background-color:#333;
+}
+
+ul li a:not(.btn){
+    width: 60px;
+
 }
 
 li a:hover:not(.active) {
     background-color: #111;
 }
 
-input[type=text], input[type=password] {
-    float:right;
-    width: 200px;
-    padding: 5px 15px;
-    margin: 4px;
-    font-size: 12px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+li .active {
+    background-color: #226;
 }
 
-.btn {
-    margin: 2px 0px;
-    -webkit-border-radius: 8;
-    -moz-border-radius: 8;
-    border-radius: 8px;
-    font-family: Arial;
-    color: #fcfcfc;
-    font-size: 12px;
-    padding: 8px 5px;
-    background: #919496;
-    border: solid #272e33 1px;
-    text-decoration: none;
-}
-
-.btn:hover {
-    background: #000;
-    text-decoration: none;
-}
 
 footer {
     position:relative;
