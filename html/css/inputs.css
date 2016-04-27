@@ -46,3 +46,7 @@ input[type=text], input[type=password], input[type=email] {
     background: #000;
     text-decoration: none;
 }
+
+.btn a {
+    text-decoration:none;
+}
