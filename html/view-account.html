@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Forum</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+            
+            <link rel="stylesheet" type="text/css" href="css/reset.css">
+                <link rel="stylesheet" type="text/css" href="css/outline.css">
+                    <link rel="stylesheet" type="text/css" href="css/center_form.css">
+                        <link rel="stylesheet" type="text/css" href="css/inputs.css">
+                            
+                            </head>
+    <body>
+        <ul>
+            <li>
+                <a href="#" class="btn" style="none">Search</a>
+                <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                    </li>
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="account.html">Register</a></li>
+            <li style="float:left"><a href="index.html">Index</a></li>
+        </ul>
+        <div class="container">
+            <h3>Project Forum</h3>
+            <div class="content">
+                <h2>/User/'s Account</h2>
+                <div class="centerframe">
+                    <h1><a href="account.html">Edit Credentials</a></h1>
+                    
+                    <!---- Start User's Posts Table ----->
+                    <table class="scroll">
+                        <caption>/User/'s Posts</caption>
+                        <thead style="display:table-header-group">
+                            <tr>
+                                <th scope="col" class="id">Post ID</th>
+                                <th scope="col" class="title">Post Title </th>
+                                <th scope="col" class="sub">Topic Belonging</th>
+                                <th scope="col" class="lastPost">Comments</th>
+                                <th scope="col" class="other">Date Created</th>
+                                <th scope="col" class="other">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <!-- Need to adjust the widths of the table columns at least once -->
+                            <tr>
+                                <td style="width:51px">0</td>
+                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
+                                <td style="text-align:left; width:140px">Nonexisting Topic</td>
+                                <td style="width:120px">
+                                    Last Comment:
+                                    <br><a href=""> Some_User_Name </a><br>
+                                    Total Comments: ### </td>
+                                <td style="width:80px">N/A</td>
+                                <td style="width:80px">
+                                    <button class="btn" style="float:left">Delete<btn>
+                                        </td>
+                            </tr>
+                        <!--
+                            <tr>
+                                <td>0</td>
+                                <td style="text-align:left">Nonexisting Post</td>
+                                <td style="text-align:left">Nonexisting Topic</td>
+                                <td>
+                                    Last Comment:
+                                    <br><a href=""> Some_User_Name </a><br>
+                                    Total Comments: ###
+                                </td>
+                                <td>N/A</td>
+                                <td>
+                                    <button class="btn" style="float:left">Delete<btn>
+                                        </td>
+                            </tr>
+                        -->
+                        </tbody>
+                    </table>
+                    <!---- End User's Posts Table ----->
+                    
+                    <!---- Start User's Comments Table ----->
+                    <table class="scroll">
+                        <caption>/User/'s Comments</caption>
+                        <thead style="display:table-header-group">
+                            <tr>
+                                <th scope="col" class="id">Comment ID</th>
+                                <th scope="col" class="title">Post Title </th>
+                                <th scope="col" class="sub">Post Author</th>
+                                <th scope="col" class="lastPost">Comments</th>
+                                <th scope="col" class="other">Comment Date</th>
+                                <th scope="col" class="other">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <!-- Need to adjust the widths of the table columns at least once -->
+                            <tr>
+                                <td style="width:51px">0</td>
+                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
+                                <td style="width:140px">
+                                    Created by:<br>
+                                     <a href="">Some_User_Name</a><br>
+                                     on date_goes_here
+                                </td>
+                                <td style="width:120px">
+                                    Last Comment:
+                                    <br><a href=""> Some_User_Name </a><br>
+                                    Total Comments: ### </td>
+                                <td style="width:80px">N/A</td>
+                                <td style="width:80px">
+                                    <button class="btn" style="float:left">Delete<btn>
+                                        </td>
+                            </tr>
+                        <!--
+                            <tr>
+                                <td>0</td>
+                                <td style="text-align:left">Nonexisting Post</td>
+                                <td style="text-align:left">Nonexisting Topic</td>
+                                <td>
+                                    Last Comment:
+                                    <br><a href=""> Some_User_Name </a><br>
+                                    Total Comments: ###
+                                </td>
+                                <td>N/A</td>
+                                <td>
+                                    <button class="btn" style="float:left">Delete<btn>
+                                        </td>
+                            </tr>
+                         -->
+                        </tbody>
+                    </table>
+                    <!---- End User's Comments Table ----->
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>Copyright &copy; Adam Bucknell &amp; Steven Leighton</footer>
+</html>
