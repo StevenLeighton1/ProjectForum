@@ -1,0 +1,20 @@
+.frame{
+    width:25%;
+    margin:0 auto;
+    padding:15px;
+    border:1px solid #444;
+    text-align:center;
+}
+
+.inFrame{
+    width:100%;
+    margin:0 auto;
+}
+
+.centerframe{
+    width:90%;
+    text-align:center;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
