@@ -28,7 +28,7 @@ input[type=text], input[type=password], input[type=email] {
     box-sizing: border-box;
 }
 
-.btn {
+.btn{
     margin: 2px 0px;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
