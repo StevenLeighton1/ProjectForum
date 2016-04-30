@@ -126,7 +126,6 @@ ul {
     background: #000;
     list-style-type: none;
     margin: 0;
-    padding: 0;
     overflow: hidden;
     border-bottom: 1px solid lightgray;
 }
@@ -142,6 +141,7 @@ ul li a{
     background-color:#333;
 }
 
+
 ul li a:not(.btn){
     width: 60px;
 
@@ -154,7 +154,6 @@ li a:hover:not(.active) {
 li .active {
     background-color: #226;
 }
-
 
 footer {
     position:relative;
