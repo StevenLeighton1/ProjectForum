@@ -30,7 +30,7 @@
             <!-- If login fails ==> open the login page
              If signs out   ==> open the login page -->
             <form action="login_request.php" method="post">
-                <li><a class="active"><button type="submit" class="subBtn">Sign In</button></a></li>
+                <li><a class="active"><button type="submit" class="subBtn"></button>Sign In</a></li>
                 <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
                 <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
             </form>
