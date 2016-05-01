@@ -110,7 +110,6 @@ class User {
 			$query = "UPDATE `user` SET ";
 			$query .= "`last_login` = '" . $this->last_login . "', ";
 			$query .= "`user_type` = '" . $this->user_type . "', ";
-			$query .= "`date_joined` = '" . $this->date_joined . "', ";
 			$query .= "`email` = '" . $this->email . "', ";
 			$query .= "`username` = '" . $this->username . "', ";
 			$query .= "`nickname` = '" . $this->nickname . "', ";

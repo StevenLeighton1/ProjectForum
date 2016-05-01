@@ -24,7 +24,7 @@
              
              -->
             
-            <li><a href="account.html">Register</a></li>
+            <li><a href="account.php">Register</a></li>
             <!--  <li><a href="login.html">Sign In</a></li> -->
             
             <!-- If login fails ==> open the login page

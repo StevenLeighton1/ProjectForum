@@ -44,7 +44,7 @@
                 <div class="inFrame">
                     <h1>Create an Account.</h1>
             <!-- <h1>Edit your credentials.</h1> -->
-                    <form action="#" method="post">
+                    <form action="register_create.php" method="post">
                         <input type="text" name="user" placeholder="Username">
                             <br>
                         <input type="text" name="nickname" placeholder="Nickname (Optional)">
