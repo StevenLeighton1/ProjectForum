@@ -1,10 +1,11 @@
 <?php
+    require_once dirname(__FILE__) . "/../models/user.php";
     session_start();
     if(empty($_SESSION['logged_in'])){
         $_SESSION['logged_in'] = false;
     }
-    else if($_SESSION['logged_in'] == true){
-        header("location: index.php");
+    else if($_SESSION['logged_in'] != true){
+        header("location: login.php?message=Please login first");
     }
 ?>
 <!DOCTYPE html>
@@ -24,14 +25,11 @@
             <li>
                 <a href="#" class="btn" style="margin-right:16px">Search</a>
                 <input type="text" name="search" placeholder="Search Forum" style="float:right">
-                    </li>
+            </li>
             
-            <li><a href="account.php">Register</a></li>
-                <form action="login_request.php" method="post">
-                    <li><button type="submit" style="float:right;width:3%;margin-right:0px">Sign In</button></li>
-                    <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
-                    <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
-                </form>
+            <li><a href="logout.php">Sign Out</a></li>
+            <li><a href="view-account.php">Account</a></li>
+
             <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
         
@@ -40,22 +38,20 @@
         <div class="content">
             <div class="frame">
                 <div class="inFrame">
-                    <h1>Create an Account.</h1>
+                    <h1>Edit Account Information</h1>
             <!-- <h1>Edit your credentials.</h1> -->
-                    <form action="register_create.php" method="post">
-                        <input type="text" name="user" placeholder="Username">
+                    <form action="edit_account_request.php" method="post">
+                        <input type="text" name="user" value="<?php echo $_SESSION['user']->username; ?>">
                             <br>
-                        <input type="text" name="nickname" placeholder="Nickname (Optional)">
+                        <input type="text" name="nickname" value="<?php echo $_SESSION['user']->nickname; ?>">
                             <br>
-                        <input type="email" name="email" placeholder="Email Address">
+                        <input type="email" name="email" value="<?php echo $_SESSION['user']->email; ?>">
                             <br>
-                    <!-- Old Password
-                     <input type="password" name="pass0" placeholder="Old Password">
-                     <br>
-                     -->
-                        <input type="password" name="pass1" placeholder="Password">
+                        <input type="password" name="pass1" placeholder="New Password (Optional)">
                             <br>
-                        <input type="password" name="pass2" placeholder="Confirm Password">
+                        <input type="password" name="pass2" placeholder="Confirm New Password (Optional)">
+                            <br>
+                        <input type="password" name="pass3" placeholder="Current Password (Required)">
                             <br>
                     <!-- is moderator check box
                         <input id="check1" type="checkbox" name="check" value="check1">
@@ -63,9 +59,10 @@
                             <br>
                      -->
                             <br>
-                        <input type="submit" value="Sign Up!" class="btn">
+                        <input type="submit" value="Edit" class="btn">
                     <!-- Done Edit -->
                     </form>
+                    <?php echo $_GET['message']; ?>
                 </div>
             </div>
         </div>

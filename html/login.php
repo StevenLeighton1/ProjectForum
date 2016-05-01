@@ -29,13 +29,13 @@
             
             <!-- If login fails ==> open the login page
              If signs out   ==> open the login page -->
-            <form action="login.html" method="post">
+            <form action="login_request.php" method="post">
                 <!-- Add code to make "anchor" perform submit action-->
                 <li><a id="anchor" href="#" class="active">Sign In</a></li>
                 <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
                 <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
             </form>
-            <li style="float:left"><a href="index.html">Index</a></li>
+            <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
         
         <div class="container">
@@ -45,9 +45,11 @@
                 <div class="inFrame">
                     
     <!--                <h1 style="color:#990000">There was an error, try again.</h1>  -->
-                    <h1>Please sign in to your acount.</h1>
+                    <?php if($_GET['message'] == '') echo "<h1>Please sign in to your acount.</h1>";
+                          else echo $_GET['message']; 
+                    ?>
     
-                    <form action="#" method="post">
+                    <form action="login_request.php" method="post">
                         <input type="text" name="user" placeholder="Username">
                             <br>
                         <input type="password" name="pass" placeholder="Password">

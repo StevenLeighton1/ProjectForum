@@ -102,7 +102,9 @@ class User {
 			$this->username = $user['username'];
 			$this->password = $user['password'];
 			$this->nickname = $user['nickname'];
+			return true;
 		}
+		return false;
 	}
 
 	public function Save(){
@@ -246,6 +248,26 @@ class User {
 	public function GetSubscribes(){
 
 			$query = "SELECT * FROM `user_subscribe` WHERE `userID` = {$this->userID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Topic($row['topicID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetTopics(){
+
+			$query = "SELECT * FROM `topic`";
 
 			$db = GetDB();
 			$rows = $db->query($query);

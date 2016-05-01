@@ -1,3 +1,16 @@
+<?php
+    require_once dirname(__FILE__) . "/../models/user.php";
+    require_once dirname(__FILE__) . "/../models/topic.php";
+    require_once dirname(__FILE__) . "/../models/post.php";
+    require_once dirname(__FILE__) . "/../models/comment.php";
+    session_start();
+    if(empty($_SESSION['logged_in'])){
+        $_SESSION['logged_in'] = false;
+    }
+    else if($_SESSION['logged_in'] == false){
+        header("location: login.php?message=Please login first");
+    }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,39 +30,25 @@
                 <input type="text" name="search" placeholder="Search Forum" style="float:right">
                     </li>
             
-            <!-- If logged in, replace account and form with the following:
-             <li><a href="login.html">Sign Out</a></li>
-             <li><a href="view-account.html">Account</a></li>
-             
-             -->
-            
-            <li><a href="account.html">Register</a></li>
-            <!--  <li><a href="login.html">Sign In</a></li> -->
-            
-            <!-- If login fails ==> open the login page
-             If signs out   ==> open the login page -->
-            <form action="#" method="post">
-                <!-- Add code to make "anchor" perform submit action-->
-                <li><a id="anchor" href="login.html" >Sign In</a></li>
-                <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
-                <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
-            </form>
-            <li style="float:left"><a href="index.html">Index</a></li>
+            <li><a href="logout.php">Sign Out</a></li>
+            <li><a href="view-account.php">Account</a></li>
+
+            <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
         
         <div class="container">
             <h3>Project Forum</h3>
             <div class="content">
-                <h2>/User/'s Account</h2>
+                <h2><?php echo $_SESSION['user']->username; ?>'s Account</h2>
                 <div class="centerframe">
                     
                     <!-- Show only if your account -->
-                    <h1><a href="account.html">Edit Credentials</a></h1>
+                    <h1><a href="edit_account.php?message=">Edit Account Information</a></h1>
                     
                     <hr style="width:850px">
-                    <!---- Start User's Posts Table ----->
+                    <!-- Start User's Posts Table -->
                     <table class="scroll">
-                        <caption>/User/'s Posts</caption>
+                        <caption>Posts</caption>
                         <thead style="display:table-header-group">
                             <tr>
                                 <th scope="col" class="id">Post ID</th>
@@ -79,12 +78,12 @@
                         
                         </tbody>
                     </table>
-                    <!---- End User's Posts Table ----->
+                    <!-- End User's Posts Table -->
                     <br>
                     <hr style="width:850px">
-                    <!---- Start User's Comments Table ----->
+                    <!-- Start User's Comments Table -->
                     <table class="scroll">
-                        <caption>/User/'s Comments</caption>
+                        <caption>Comments</caption>
                             <tr>
                                 <th scope="col" class="id">Comment ID</th>
                                 <th scope="col" class="com">Comment</th>
@@ -129,12 +128,12 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!---- End User's Comments Table ----->
+                    <!-- End User's Comments Table -->
                     <br>
                     <hr style="width:850px">
-                    <!---- Start User's Subscribed Table ----->
+                    <!-- Start User's Subscribed Table -->
                     <table class="scroll">
-                        <caption>/User/'s Subscribed</caption>
+                        <caption>Subscribed</caption>
                         <thead style="display:table-header-group">
                             <tr>
                                 <th scope="col" class="id">Post ID</th>
@@ -163,12 +162,12 @@
                                 <td style="width:80px">
                                     <button class="btn" style="float:left" onclick="location.href='#'">
                                         Remove <!--Follow--><btn>
-                                        </td>
+                                </td>
                             </tr>
                          
                         </tbody>
                     </table>
-                    <!---- End User's Subscribed Table ----->
+                    <!-- End User's Subscribed Table -->
                 </div>
             </div>
         </div>
