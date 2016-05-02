@@ -12,9 +12,10 @@
         die();
     }
 
-    $user_posts = $_SESSION['user']->GetPosts();
-    $user_comments = $_SESSION['user']->GetComments();
-    $user_subscribes = $_SESSION['user']->GetSubscribes();
+    $user = new User($_GET['userID']);
+    $user_posts = $user->GetPosts();
+    $user_comments = $user->GetComments();
+    $user_subscribes = $user->GetSubscribes();
 
 ?>
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
                     </li>
             
             <li><a href="logout.php">Sign Out</a></li>
-            <li><a href="view-account.php" class="active">Account</a></li>
+            <?php echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>'; ?>
 
             <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
@@ -45,7 +46,7 @@
         <div class="container">
             <h3>Project Forum</h3>
             <div class="content">
-                <h2><?php echo $_SESSION['user']->username; ?>'s Account</h2>
+                <h2><?php echo $user->username; ?>'s Account</h2>
                 <div class="centerframe">
                     
                     <!-- Show only if your account -->
@@ -62,7 +63,7 @@
                                 <th scope="col" class="sub">Topic</th>
                                 <th scope="col" class="lastPost">Comments</th>
                                 <th scope="col" class="other">Date Created</th>
-                                <th scope="col" class="other">Delete</th>
+                                <?php if($user->userID == $_SESSION['user']->userID) echo '<th scope="col" class="other">Delete</th>';?>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,21 +76,38 @@
                                 $last_comment = NULL;
                             ?>
                             <tr>
-                                <td style="width:51px"><?php echo $post->postID; ?></td>
-                                <td style="text-align:left; width:262px" ><?php echo $post->title; ?></td>
-                                <td style="text-align:left; width:140px"><?php echo $topic->name; ?></td>
-                                <td style="width:120px">
-                                    Last Comment:
-                                    <br><a href=""> Some_User_Name </a><br>
-                                    Total Comments: ### </td>
-                                <td style="width:80px"><?php echo $post->created_date; ?></td>
-                                <td style="width:80px">
-                                    <form action="delete_post.php" method="post" id="<?php echo $post->postID; ?>">
-                                        <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
-                                        <input type="hidden" value="<?php echo $topic->topicID; ?>" name="topicID">
-                                    </form>
-                                    <button type="submit" form="<?php echo $post->postID; ?>" class="btn" style="float:left"  onclick="location.href='#'">Delete<btn>
-                                </td>
+                                <?php if($user->userID == $_SESSION['user']->userID) { ?>
+
+                                        <td style="width:51px"><?php echo $post->postID; ?></td>
+                                        <td style="text-align:left; width:262px" ><?php echo $post->title; ?></td>
+                                        <td style="text-align:left; width:140px"><?php echo $topic->name; ?></td>
+                                        <td style="width:120px">
+                                            Last Comment:
+                                            <br><a href=""> Some_User_Name </a><br>
+                                            Total Comments: <?php echo count($comments); ?> </td>
+                                        <td style="width:80px"><?php echo $post->created_date; ?></td>
+                                        <td style="width:80px">
+                                                <form action="delete_post.php" method="post" id="<?php echo $post->postID; ?>">
+                                                    <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
+                                                    <input type="hidden" value="<?php echo $topic->topicID; ?>" name="topicID">
+                                                </form>
+                                                <button type="submit" form="<?php echo $post->postID; ?>" 
+                                                    class="btn" style="float:left"  onclick="location.href='#'">Delete<btn>
+                                        </td>
+                                <?php } 
+                                    else { ?>
+                                        <td style="width:59px"><?php echo $post->postID; ?></td>
+                                        <td style="text-align:left; width:296px" ><?php echo $post->title; ?></td>
+                                        <td style="text-align:left; width:160px"><?php echo $topic->name; ?></td>
+                                        <td style="width:120px">
+                                            Last Comment:
+                                            <br><a href=""> Some_User_Name </a><br>
+                                            Total Comments: <?php echo count($comments); ?> </td>
+                                        <td style="width:70px"><?php echo $post->created_date; ?></td>
+                                        
+
+                                <?php } //close if ?>
+
                             </tr>
                             <?php } //end for loop ?>
 
@@ -122,7 +140,7 @@
                             
                             <!-- Need to adjust the widths of the table columns at least once -->
                             <tr>
-                                <td style="width:51px">0</td>
+                                <td style="width:52px">0</td>
                                 <td style="text-align:left; width:201px" >Nonexisting Comment</td>
                                 <td style="text-align:left; width:201px" >Nonexisting Post</td>
                                     

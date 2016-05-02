@@ -46,7 +46,7 @@
                     // If logged in, replace account and form with the following:
 
                 echo '<li><a href="logout.php">Sign Out</a></li>';
-                echo '<li><a href="view-account.php">Account</a></li>';
+                echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>';
 
                 } //close if else
             ?>
@@ -73,15 +73,16 @@
                     <th scope="col" class="title"> List of Posts </th>
                     <th scope="col" class="other"> Upvotes </th>
                     <th scope="col" class="other"> Comments </th>
+                    <th scope="col" class="other"> Submitted By </th>
                     <th scope="col" class="lastPost"> Last Comment </th>
                 </tr>
 
                 <!-- Go through each post -->
                 <?php foreach ($posts as $post) { 
+                    $post_user = $post->GetUser();
                 	$comments = $post->GetComments();
                 	$comment_count = count($comments);
-                    $recent_comment = NULL;
-                    $recent_comment = NULL;
+                    $recent_comment = $post->GetLatestComment();
                 ?>
                     
                     <tr>
@@ -89,7 +90,10 @@
                         <td><a href="post.php?postID=<?php echo $post->postID; ?>"><?php echo $post->title; ?></a></td>
                         <td style="text-align:center"><?php echo $post->ups; ?></td>
                         <td style="text-align:center"><?php echo $comment_count; ?></td>
-                        <td style="text-align:center">N/A</td>
+                        <td style="text-align:center"><?php echo '<a href="view-account.php?userID='.$post_user->userID.'">'.
+                                                                   $post_user->username .'</a>' ?></td>
+                        <td style="text-align:center"><?php if($recent_comment == NULL) echo 'N/A';
+                                                            else echo substr($recent_comment->comment_text,0,20); ?></td>
                     </tr>
                 
                 <?php } ?>

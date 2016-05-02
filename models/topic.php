@@ -115,6 +115,33 @@ class Topic {
 				return Array();
 			}
 	}
+	
+
+	public function GetLatestPost(){
+
+			$query = "SELECT * FROM `post` ORDER BY `post`.`created_date` DESC";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+			}
+
+			foreach ($ret as $post) {
+				if($this->topicID == $post->GetTopic()->topicID){
+
+					return $post;
+				}
+			}
+
+			return NULL;
+	}
 
 //----------------------------------------------ADD STUFF--------------------------------------------
 	public function AddPost($postID){

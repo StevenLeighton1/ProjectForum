@@ -45,7 +45,7 @@
                     // If logged in, replace account and form with the following:
 
                 echo '<li><a href="logout.php">Sign Out</a></li>';
-                echo '<li><a href="view-account.php">Account</a></li>';
+                echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>';
 
                 } //close if else
             ?>
@@ -76,6 +76,7 @@
                 <!-- Go through each topic -->
                 <?php foreach ($topics as $topic) { 
                     $posts = $topic->GetPosts(); //all posts in a topic
+                    $last_post = $topic->GetLatestPost();
                     $recent_post = NULL;
                     $recent_time = NULL;
                     $comment_count = 0;
@@ -89,7 +90,10 @@
                         <td><a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?></a></td>
                         <td style="text-align:center"><?php echo count($posts); ?></td>
                         <td style="text-align:center"><?php echo $comment_count; ?></td>
-                        <td style="text-align:center">N/A</td>
+                        <td style="text-align:center"><?php if($last_post == NULL) echo 'N/A';
+                                                            else echo "<a href=post.php?post=" . $last_post->postID . ">"
+                                                                        .substr($last_post->title,0,20)
+                                                                        . "</a>"; ?></td>
                     </tr>
                 
                 <?php } ?>

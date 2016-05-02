@@ -31,7 +31,7 @@
                     </li>
             
             <li><a href="logout.php">Sign Out</a></li>
-            <li><a href="view-account.php">Account</a></li>
+            <?php echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>'; ?>
 
             <li style="float:left"><a href="index.php">Home</a></li>
         </ul>

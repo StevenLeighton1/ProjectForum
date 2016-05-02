@@ -188,6 +188,32 @@ class Post {
 		}
 	}
 
+	public function GetLatestComment(){
+
+			$query = "SELECT * FROM `comment` ORDER BY `comment`.`comment_date` DESC";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Comment($row['commentID']);
+					$ret[] = $u;
+
+				}
+			}
+
+			foreach ($ret as $comment) {
+				if($this->postID == $comment->GetPost()->postID){
+
+					return $comment;
+				}
+			}
+
+			return NULL;
+	}
+
 //----------------------------------------------ADD STUFF--------------------------------------------
 
 	public function AddComment($commentID){
