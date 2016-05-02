@@ -5,11 +5,12 @@
     require_once dirname(__FILE__) . "/../models/comment.php";
     session_start();
     if(empty($_SESSION['logged_in'])){
-        $_SESSION['logged_in'] = false;   //not logged in
-        $_SESSION['user'] = new User(-1); //empty user object
+        $_SESSION['logged_in'] = false;
+        $_SESSION['user'] = new User(-1);
     }
 
-    $topics = $_SESSION['user']->GetTopics(); //get all topics
+    $topic = new Topic($_GET['topicID']);
+    $posts = $topic->GetPosts();
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,7 +51,7 @@
                 } //close if else
             ?>
 
-            <li style="float:left"><a href="index.php" class="active">Home</a></li>
+            <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
         
         <div class="container">
@@ -62,32 +63,29 @@
                         echo '<caption>Please sign in to create a post or comment.</caption>';
                     }
                     else{
-                        echo '<caption>Welcome to Project Forum '. $_SESSION['user']->username .'!</caption>';
+                        echo '<caption><a href="post_create.php?topicID=' . $topic->topicID . '&message=">Submit a new post!</a></caption>';
                     }
                 ?>
                 <tr>
-                    <th scope="col" class="id"> Topic ID</th>
-                    <th scope="col" class="title"> List of Topics </th>
-                    <th scope="col" class="other"> Posts </th>
+                    <th scope="col" class="id"> Post ID</th>
+                    <th scope="col" class="title"> List of Posts </th>
+                    <th scope="col" class="other"> Upvotes </th>
                     <th scope="col" class="other"> Comments </th>
-                    <th scope="col" class="lastPost"> Last Post </th>
+                    <th scope="col" class="lastPost"> Last Comment </th>
                 </tr>
 
-                <!-- Go through each topic -->
-                <?php foreach ($topics as $topic) { 
-                    $posts = $topic->GetPosts(); //all posts in a topic
-                    $recent_post = NULL;
-                    $recent_time = NULL;
-                    $comment_count = 0;
-                    foreach ($posts as $post) {
-                        $comment_count += count($post->GetComments());
-                    }
+                <!-- Go through each post -->
+                <?php foreach ($posts as $post) { 
+                	$comments = $post->GetComments();
+                	$comment_count = count($comments);
+                    $recent_comment = NULL;
+                    $recent_comment = NULL;
                 ?>
                     
                     <tr>
-                        <td style="text-align:center"><?php echo $topic->topicID; ?></td>
-                        <td><a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?></a></td>
-                        <td style="text-align:center"><?php echo count($posts); ?></td>
+                        <td style="text-align:center"><?php echo $post->postID; ?></td>
+                        <td><a href="post.php?postID=<?php echo $post->postID; ?>"><?php echo $post->title; ?></a></td>
+                        <td style="text-align:center"><?php echo $post->ups; ?></td>
                         <td style="text-align:center"><?php echo $comment_count; ?></td>
                         <td style="text-align:center">N/A</td>
                     </tr>

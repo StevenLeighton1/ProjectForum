@@ -58,7 +58,6 @@ class Post {
 			$query = "UPDATE `post` SET ";
 			$query .= "`title` = '" . $this->title . "', ";
 			$query .= "`content` = '" . $this->content . "', ";
-			$query .= "`created_date` = '" . $this->created_date . "', ";
 			$query .= "`ups` = '" . $this->ups . "', ";
 			$query .= "`downs` = '" . $this->downs . "', ";
 			$query .= "`tags` = '" . $this->tags . "' ";
@@ -150,6 +149,36 @@ class Post {
 	}
 
 //----------------------------------------------ADD STUFF--------------------------------------------
+
+	public function AddComment($commentID){
+		$query = "INSERT INTO `post_comment` (`postID`, `commentID`) VALUES ";
+		$query .="({$this->postID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add comment to post: " . $this->postID);
+		}
+	}
+
+//----------------------------------------------DELETE STUFF--------------------------------------------
+
+	public function RemoveComment($commentID){
+		$query = "DELETE FROM `post_comment` WHERE `postID` = ". $commentID ." AND `postID` = {$this->postID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from post: " . $this->postID);
+		}
+	}
+
 }
 
 ?>

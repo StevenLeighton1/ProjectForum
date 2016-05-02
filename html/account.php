@@ -26,7 +26,7 @@
                 <input type="text" name="search" placeholder="Search Forum" style="float:right">
                     </li>
             
-            <li><a href="account.php" class="active">Register</a></li>
+            <li><a href="account.php">Register</a></li>
                 <form action="login_request.php" method="post">
                     <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
                     <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
@@ -41,7 +41,7 @@
             <div class="frame">
                 <div class="inFrame">
                     <h1>Create an Account.</h1>
-            <!-- <h1>Edit your credentials.</h1> -->
+            
                     <form action="register_create.php" method="post">
                         <input type="text" name="user" placeholder="Username">
                             <br>
@@ -49,10 +49,6 @@
                             <br>
                         <input type="email" name="email" placeholder="Email Address">
                             <br>
-                    <!-- Old Password
-                     <input type="password" name="pass0" placeholder="Old Password">
-                     <br>
-                     -->
                         <input type="password" name="pass1" placeholder="Password">
                             <br>
                         <input type="password" name="pass2" placeholder="Confirm Password">
