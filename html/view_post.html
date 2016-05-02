@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Forum</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+            
+            <link rel="stylesheet" type="text/css" href="css/reset.css">
+            <link rel="stylesheet" type="text/css" href="css/outline.css">
+            <link rel="stylesheet" type="text/css" href="css/inputs.css">
+            <link rel="stylesheet" type="text/css" href="css/center_form.css">
+
+
+        </head>
+    <body>
+        <ul>
+            <li>
+                <a href="#" class="btn" style="margin-right:16px">Search</a>
+                <input type="text" name="search" placeholder="Search Forum" style="float:right">
+            </li>
+        
+            <!-- If logged in, replace account and form with the following:
+             <li><a href="login.html">Sign Out</a></li>
+             <li><a href="view-account.html">Account</a></li>
+             
+             -->
+            
+            <li><a href="account.html">Register</a></li>
+            <!--  <li><a href="login.html">Sign In</a></li> -->
+            
+            <!-- If login fails ==> open the login page
+             If signs out   ==> open the login page -->
+            <form action="login.html" method="get">
+                <!-- Add code to make "anchor" perform submit action-->
+                <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
+                <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
+                <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
+            </form>
+            <li style="float:left"><a href="index.html">Index</a></li>
+        </ul>
+        
+        <div class="container">
+            <h3>Project Forum</h3>
+            <div class="content">
+                <h2>Post Title can go here I guess...</h2>
+                <hr width="80%">
+                <br>
+                
+                
+                <div class="comment_block">
+                    <!-- The post goes hear -->
+                    <p id="post">
+                        I wanted to write a post about something awesome! However, I think I failed because I have gone completely brain dead recently. It sucks. Who ever ends up reading this post is gonna realize that they wasted a good minute of their life. But maybe that's what they want me think... I wonder how deep this will eventually go?
+                    </p>
+                    <hr width="100%">
+                    <h1><div style="margin-bottom:-30px">Posted by: /USER/ on /TIMESTAMP/</div>
+                        <span style="float:right">
+                         
+                         <!-- Moderator would probably have all 3 buttons available-->
+                         
+                         <!-- If User's Post-->
+                         <!--   <button class="btn" style="margin-bottom:10px">Edit Post</button>
+                              <button class="btn" style="margin-bottom:10px">Delete Post</button> -->
+                         
+                         <!-- Other's posts -->
+                            <button class="btn" style="margin-bottom:10px">Subscribe</button>
+                        </span></h1>
+                    <br> <br>
+                    
+                <!-- Start write comment --->
+                    <form action="#" method="post">
+                    <textarea name="text" placeholder="Write your comment here..."></textarea>
+                    <br>
+                    <input type="submit" value="Submit!" class="btn">
+                </div>
+                <!-- End write comment --->
+                <br><br>
+                <h4 style="text-align:center">User Comments:</h4>
+                <br>
+                <!-- 
+                 Probably add some sort of sort bar here...
+                 Should initially be most recent at top too...
+                 -->
+                
+                <!-- start comment block -->
+                <div class="comment_block">
+                    <h4><a href="">\USER\</a> on \TIMESTAMP\
+                        <span style="float:right">
+                            <button class="updown" style="background-color: #0A5">Up</button>#3003
+                            <button class="updown" style="background-color: #E20">Down</button>#20129
+                        </span>
+                    </h4>
+                    <hr width="100%">
+                    <p id="comment">
+                        Well this is how a comment works, I don't know how well it is working or even if it is. I just need a lot of text so I can test it ma tybe i shjouldnt even fix my spaelling byt thye provlent is its a forrce oif habit....
+                    </p>
+                </div>
+                <!-- end comment block -->
+                
+            </div>
+        </div>
+    </body>
+    <footer>Copyright &copy; Adam Bucknell &amp; Steven Leighton</footer>
+    
+</html>
