@@ -63,7 +63,7 @@
                         echo '<caption>Please sign in to create a post or comment.</caption>';
                     }
                     else{
-                        echo '<caption><a href="post_create.php?topicID=' . $topic->topicID . '">Submit a new post!</a></caption>';
+                        echo '<caption><a href="post_create.php?topicID=' . $topic->topicID . '&message=">Submit a new post!</a></caption>';
                     }
                 ?>
                 <tr>
