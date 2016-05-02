@@ -51,7 +51,9 @@
                 } //close if else
             ?>
 
-            <li style="float:left"><a href="index.php" class="active">Home</a></li>
+
+            <li style="float:left"><a href="index.php">Home</a></li>
+
         </ul>
         
         <div class="container">
