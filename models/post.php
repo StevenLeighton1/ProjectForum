@@ -80,14 +80,54 @@ class Post {
 			return; // Wrong postID
 		}
 
-		$query = "DELETE FROM `post` WHERE `postID` = {$this->postID}";
-
 		$db = GetDB();
+
+		$query = "DELETE FROM `post_comment` WHERE `postID` = {$this->postID}";
+
 		if($db->query($query) === TRUE){
 			// Updated succesfully
 		} else {
+			return false;
 			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
 		}
+
+		$query = "DELETE FROM `user_post` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_like` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_dislike` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `post` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		return true;
 	}
 //----------------------------------------------GET STUFF--------------------------------------------
 	public function GetComments(){

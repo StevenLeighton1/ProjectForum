@@ -11,6 +11,11 @@
         header("location: login.php?message=Please login first");
         die();
     }
+
+    $user_posts = $_SESSION['user']->GetPosts();
+    $user_comments = $_SESSION['user']->GetComments();
+    $user_subscribes = $_SESSION['user']->GetSubscribes();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -63,20 +68,31 @@
                         <tbody>
                             
                             <!-- Need to adjust the widths of the table columns at least once -->
+
+                            <?php foreach ($user_posts as $post) {
+                                $topic = $post->GetTopic();
+                                $comments = $post->GetComments();
+                                $last_comment = NULL;
+                            ?>
                             <tr>
-                                <td style="width:51px">0</td>
-                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
-                                <td style="text-align:left; width:140px">Nonexisting Topic</td>
+                                <td style="width:51px"><?php echo $post->postID; ?></td>
+                                <td style="text-align:left; width:262px" ><?php echo $post->title; ?></td>
+                                <td style="text-align:left; width:140px"><?php echo $topic->name; ?></td>
                                 <td style="width:120px">
                                     Last Comment:
                                     <br><a href=""> Some_User_Name </a><br>
                                     Total Comments: ### </td>
-                                <td style="width:80px">N/A</td>
+                                <td style="width:80px"><?php echo $post->created_date; ?></td>
                                 <td style="width:80px">
-                                    <button class="btn" style="float:left"  onclick="location.href='#'">Delete<btn>
-                                        </td>
+                                    <form action="delete_post.php" method="post" id="<?php echo $post->postID; ?>">
+                                        <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
+                                        <input type="hidden" value="<?php echo $topic->topicID; ?>" name="topicID">
+                                    </form>
+                                    <button type="submit" form="<?php echo $post->postID; ?>" class="btn" style="float:left"  onclick="location.href='#'">Delete<btn>
+                                </td>
                             </tr>
-                        
+                            <?php } //end for loop ?>
+
                         </tbody>
                     </table>
                     <!-- End User's Posts Table -->
