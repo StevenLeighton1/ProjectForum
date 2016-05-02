@@ -31,7 +31,7 @@
                     </li>
             
             <li><a href="logout.php">Sign Out</a></li>
-            <li><a href="view-account.php">Account</a></li>
+            <li><a href="view-account.php" class="active">Account</a></li>
 
             <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
@@ -49,7 +49,7 @@
                     <!-- Start User's Posts Table -->
                     <table class="scroll">
                         <caption>Posts</caption>
-                        <thead style="display:table-header-group">
+                        <thead>
                             <tr>
                                 <th scope="col" class="id">Post ID</th>
                                 <th scope="col" class="title">Post Title </th>
@@ -64,26 +64,30 @@
                             <!-- Need to adjust the widths of the table columns at least once -->
                             <tr>
                                 <td style="width:51px">0</td>
-                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
-                                <td style="text-align:left; width:140px">Nonexisting Topic</td>
-                                <td style="width:120px">
+                                <td style="width:262px;text-align:left">Nonexisting Post</td>
+                                <td class="sub" style="text-align:left">Nonexisting Topic</td>
+                                <td class="lastPost">
                                     Last Comment:
                                     <br><a href=""> Some_User_Name </a><br>
-                                    Total Comments: ### </td>
-                                <td style="width:80px">N/A</td>
-                                <td style="width:80px">
+                                    Total Comments: ###
+                                </td>
+                                <td class="other">N/A</td>
+                                <td class="other" style="width:65px">
                                     <button class="btn" style="float:left"  onclick="location.href='#'">Delete<btn>
                                         </td>
                             </tr>
                         
                         </tbody>
                     </table>
-                    <!-- End User's Posts Table -->
+                        <!-- End User's Posts Table -->
+
                     <br>
                     <hr style="width:850px">
+
                     <!-- Start User's Comments Table -->
                     <table class="scroll">
                         <caption>Comments</caption>
+                        <thead>
                             <tr>
                                 <th scope="col" class="id">Comment ID</th>
                                 <th scope="col" class="com">Comment</th>
@@ -93,18 +97,18 @@
                                 <th scope="col" class="other">Up/Down Votes</th>
                                 <!-- Show delete if moderator or user
                                  else just show up/down votes
-                                 
                                  may change this to last update too, don't know yet
                                  -->
                             <!--   <th scope="col" class="other">Delete</th> -->
                             </tr>
+                        </thead>
                         <tbody>
                             
                             <!-- Need to adjust the widths of the table columns at least once -->
                             <tr>
                                 <td style="width:51px">0</td>
-                                <td style="text-align:left; width:200px" >Nonexisting Comment</td>
-                                <td style="text-align:left; width:200px" >Nonexisting Post</td>
+                                <td style="text-align:left; width:201px" >Nonexisting Comment</td>
+                                <td style="text-align:left; width:201px" >Nonexisting Post</td>
                                     
                                 <td style="width:120px">
                                     Created by:<br>
@@ -118,7 +122,7 @@
                                 
                                 <!-- Show delete if moderator or user
                                         else just show up/down votes-->
-                                <td style="width:80px; text-align:left">
+                                <td style="width:65px; text-align:left">
                                     <!--  <button class="btn" style="float:left"  onclick="location.href='#'">
                                      Delete<btn>  -->
                                     Up: ## <br>
@@ -134,7 +138,7 @@
                     <!-- Start User's Subscribed Table -->
                     <table class="scroll">
                         <caption>Subscribed</caption>
-                        <thead style="display:table-header-group">
+                        <thead >
                             <tr>
                                 <th scope="col" class="id">Post ID</th>
                                 <th scope="col" class="title">Post Title </th>
@@ -149,7 +153,7 @@
                             <!-- Need to adjust the widths of the table columns at least once -->
                             <tr>
                                 <td style="width:51px">0</td>
-                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
+                                <td style="text-align:left;width:262px">Nonexisting Post</td>
                                 <td style="text-align:left;width:140px">Nonexisting Topic</td>
                                 <td style="width:120px">
                                     Created by:<br>
@@ -159,8 +163,8 @@
                                 
                                 <!-- If not your profile, will tell you if you are subscribed-->
                                 <!-- If your profile, you can unsubscribe-->
-                                <td style="width:80px">
-                                    <button class="btn" style="float:left" onclick="location.href='#'">
+                                <td style="width:65px">
+                                    <button class="btn" style="float:left;font-size:11px" onclick="location.href='#'">
                                         Remove <!--Follow--><btn>
                                 </td>
                             </tr>

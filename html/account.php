@@ -26,7 +26,7 @@
                 <input type="text" name="search" placeholder="Search Forum" style="float:right">
                     </li>
             
-            <li><a href="account.php">Register</a></li>
+            <li><a href="account.php" class="active">Register</a></li>
                 <form action="login_request.php" method="post">
                     <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
                     <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>

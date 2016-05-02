@@ -80,25 +80,34 @@ h1 a {
 .content table th, td {
     border: 1px solid #000;
     background: rgba(255, 255, 255, 0.8);
-    padding: 10px 5px;
     font-size: 12px;
     vertical-align:middle;
     text-align:center;
-    max-height:40px;
+    padding: 10px 5px;
 }
 
 .content table th {
     font-weight:bold;
     max-height:30px;
+
+}
+
+.content table td {
+    height:30px;
+    max-height:40px;
 }
 
 
-.content table .id {width:50px;}
-.content table .title {width:260px;}
-.content table .com {width:200px;}
-.content table .sub {width:140px;}
-.content table .other {width:80px;}
-.content table .lastPost {width:120px;}
+.content table tr{
+    max-width:800px;
+}
+
+.content table .id {width:50px;max-width:50px;}
+.content table .title {width:260px;max-width:260px;}
+.content table .com {width:200px;max-width:200px;}
+.content table .sub {width:140px;max-width:140px;}
+.content table .other {width:80px;max-width:80px;}
+.content table .lastPost {width:120px;max-width:120px;}
 
 .content table.scroll{
     width:800px;
