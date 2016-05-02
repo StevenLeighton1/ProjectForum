@@ -58,7 +58,6 @@ class Post {
 			$query = "UPDATE `post` SET ";
 			$query .= "`title` = '" . $this->title . "', ";
 			$query .= "`content` = '" . $this->content . "', ";
-			$query .= "`created_date` = '" . $this->created_date . "', ";
 			$query .= "`ups` = '" . $this->ups . "', ";
 			$query .= "`downs` = '" . $this->downs . "', ";
 			$query .= "`tags` = '" . $this->tags . "' ";
