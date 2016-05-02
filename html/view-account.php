@@ -9,6 +9,7 @@
     }
     else if($_SESSION['logged_in'] == false){
         header("location: login.php?message=Please login first");
+        die();
     }
 ?>
 <!DOCTYPE html>

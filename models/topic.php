@@ -117,6 +117,33 @@ class Topic {
 	}
 
 //----------------------------------------------ADD STUFF--------------------------------------------
+	public function AddPost($postID){
+		$query = "INSERT INTO `topic_post` (`topicID`, `postID`) VALUES ";
+		$query .="({$this->topicID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add post to topic: " . $this->topicID);
+		}
+	}
+
+//----------------------------------------------DELETE STUFF--------------------------------------------
+	public function RemovePost($postID){
+		$query = "DELETE FROM `topic_post` WHERE `postID` = ". $postID ." AND `topicID` = {$this->topicID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from topic: " . $this->topicID);
+		}
+	}
 }
 
 ?>

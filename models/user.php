@@ -286,6 +286,115 @@ class User {
 	}
 
 //----------------------------------------------ADD STUFF--------------------------------------------
+
+	public function AddPost($postID){
+		$query = "INSERT INTO `user_post` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add post to user: " . $this->userID);
+		}
+	}
+
+	public function AddComment($commentID){
+		$query = "INSERT INTO `user_comment` (`userID`, `commentID`) VALUES ";
+		$query .="({$this->userID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add comment to user: " . $this->userID);
+		}
+	}
+
+	public function AddLike($postID){
+		$query = "INSERT INTO `user_like` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add like to user: " . $this->userID);
+		}
+	}
+
+	public function AddDislike($postID){
+		$query = "INSERT INTO `user_dislike` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add dislike to user: " . $this->userID);
+		}
+	}
+
+//----------------------------------------------DELETE STUFF--------------------------------------------
+	public function RemovePost($postID){
+		$query = "DELETE FROM `user_post` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveComment($commentID){
+		$query = "DELETE FROM `user_comment` WHERE `commentID` = ". $commentID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveLike($postID){
+		$query = "DELETE FROM `user_like` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveDislike($postID){
+		$query = "DELETE FROM `user_dislike` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
 }
 
 ?>
