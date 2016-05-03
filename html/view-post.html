@@ -74,7 +74,24 @@
                 </div>
                 <!-- End write comment --->
                 <br><br>
-                <h4 style="text-align:center">User Comments:</h4>
+
+                <!-- Start Sort Head -->
+                <h4 style="text-align:center">User Comments: <br>
+                    <span>
+                        <form action="view-post.html" method="get">
+                            <select name="sort">
+                                <option value="Most Recent" selected>Most Recent</option>
+                                <option value="Oldest">Oldest</option>
+                                <option value="User">User</option>
+                                <option value="Most Ups">Most Ups</option>
+                                <option value="Most Downs">Most Downs</option>
+                            </select>
+                            <button type="submit" value="send" class="btn">Sort</button>
+                        </form>
+                    </span>
+                </h4>
+                <!-- End Sort Head -->
+                
                 <br>
                 <!-- 
                  Probably add some sort of sort bar here...

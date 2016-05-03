@@ -40,6 +40,7 @@ input[type=text], input[type=password], input[type=email] {
     background: #919496;
     border: solid #272e33 1px;
     text-decoration: none;
+    cursor: pointer;
 }
     
 .btn:hover {
@@ -49,4 +50,29 @@ input[type=text], input[type=password], input[type=email] {
 
 .btn a {
     text-decoration:none;
+}
+
+
+.updown{
+    width:45px;
+    margin-left:10px;
+    position:relative;
+    bottom:3px;
+    color:#fff;
+    cursor: pointer;
+}
+
+
+select {
+    padding:3px 10px;
+    font-size: 15px;
+    margin: 0;
+    vertical-align: middle;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    background: #f8f8f8;
+    color:#000;
+    display: inline-block;
+    cursor: pointer;
 }
