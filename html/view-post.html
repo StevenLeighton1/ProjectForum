@@ -68,28 +68,29 @@
                     
                 <!-- Start write comment --->
                     <form action="#" method="post">
-                    <textarea name="text" placeholder="Write your comment here..."></textarea>
-                    <br>
-                    <input type="submit" value="Submit!" class="btn">
+                        <textarea name="text" placeholder="Write your comment here..."></textarea>
+                        <br>
+                        <input type="submit" value="Submit" class="btn">
+                    </form>
                 </div>
                 <!-- End write comment --->
                 <br><br>
 
                 <!-- Start Sort Head -->
-                <h4 style="text-align:center">User Comments: <br>
-                    <span>
-                        <form action="view-post.html" method="get">
-                            <select name="sort">
-                                <option value="Most Recent" selected>Most Recent</option>
-                                <option value="Oldest">Oldest</option>
-                                <option value="User">User</option>
-                                <option value="Most Ups">Most Ups</option>
-                                <option value="Most Downs">Most Downs</option>
-                            </select>
-                            <button type="submit" value="send" class="btn">Sort</button>
-                        </form>
-                    </span>
-                </h4>
+                <h4 style="text-align:center">User Comments:</h4>
+                <div align="center">
+                <form action="#" method="GET">
+                    <select name="sort">
+                        <option value="1" selected>Most Recent</option>
+                        <option value="2">Oldest</option>
+                        <option value="3">User</option>
+                        <option value="4">Most Ups</option>
+                        <option value="5">Most Downs</option>
+                    </select>
+                    <input type="submit" value="Sort" class="btn">
+                </form>
+                
+                </div>
                 <!-- End Sort Head -->
                 
                 <br>
