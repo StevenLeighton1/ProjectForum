@@ -54,6 +54,8 @@ input[type=text], input[type=password], input[type=email] {
 
 
 .updown{
+    border: solid black 1px;
+    border-radius: 4px;
     width:45px;
     margin-left:10px;
     position:relative;
@@ -61,7 +63,6 @@ input[type=text], input[type=password], input[type=email] {
     color:#fff;
     cursor: pointer;
 }
-
 
 select {
     padding:3px 10px;
