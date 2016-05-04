@@ -60,14 +60,32 @@
         <h3>Project Forum</h3>
         <div class="content">
             <table>
-                <?php 
-                    if($_SESSION['logged_in'] != true){
-                        echo '<caption>Please sign in to create a post or comment.</caption>';
-                    }
-                    else{
-                        echo '<caption><a href="post_create.php?topicID=' . $topic->topicID . '&message=">Submit a new post!</a></caption>';
-                    }
-                ?>
+                <caption>
+                    <?php
+                        if($_SESSION['logged_in'] != true){
+                            echo 'Please sign in to create a post or comment.';
+                        }
+                        else{
+                            echo '<a href="post_create.php?topicID=' . $topic->topicID . '&message=">Submit a new post!</a>';
+                        }
+                    ?>
+                        <br>
+                    <span>
+                        <!-- Needs to reload exact page, rather than the default -->
+
+                        <form action="#" method="get">
+                            <select name="sort">
+                                <option value="1" selected>Post Name (Asc)</option>
+                                <option value="2">Post Name (Desc)</option>
+                                <option value="3">Last Updated</option>
+                                <option value="4">Most Ups</option>
+                                <option value="5">Most Comments</option>
+                                <option value="6">Post ID</option>
+                            </select>
+                            <button type="submit" value="send" class="btn">Sort</button>
+                        </form>
+                    </span>
+                </caption>
                 <tr>
                     <th scope="col" class="id"> Post ID</th>
                     <th scope="col" class="title"> List of Posts </th>

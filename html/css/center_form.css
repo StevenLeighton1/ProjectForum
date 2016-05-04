@@ -18,3 +18,40 @@
     padding-bottom: 20px;
 }
 
+
+.comment_block{
+    border:3px solid rgba(0,0,0,.6);
+    display:block;
+    margin:0 auto;
+    padding:15px;
+    width:70%;
+    background-color:#fff
+    
+}
+
+textarea {
+    max-width:99%;
+    width:99%;
+    height:100px;
+    max-height:100px;
+    padding:5px;
+    font-size:12pt;
+}
+
+
+h4{
+    font-size:20px;
+    padding:0px 5px 5px 5px;
+    text-align:left;
+}
+
+.comment_block p#post{
+    padding: 15px 5%;
+    font-size:20px;
+}
+
+.comment_block p#comment{
+    text-align:left;
+    font-size:17px;
+    padding:10px 15%;
+}
