@@ -214,6 +214,46 @@ class Post {
 			return NULL;
 	}
 
+	public function GetUserLikes(){
+
+			$query = "SELECT * FROM `user_like` WHERE `postID` = {$this->postID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetUserDislikes(){
+
+			$query = "SELECT * FROM `user_dislike` WHERE `postID` = {$this->postID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['userID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
 //----------------------------------------------ADD STUFF--------------------------------------------
 
 	public function AddComment($commentID){

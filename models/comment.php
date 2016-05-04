@@ -6,8 +6,6 @@ class Comment {
 	public $commentID = -1;
 	public $comment_text;
 	public $comment_date;
-	public $num_upvote;
-	public $num_downvote;
 
 	public function Comment($comment_id){
 		//check to see if valid comment_id
@@ -39,8 +37,6 @@ class Comment {
 			if($comment != NULL){
 				$this->comment_text = $comment['comment_text'];
 				$this->comment_date = $comment['comment_date'];
-				$this->num_upvote = $comment['num_upvote'];
-				$this->num_downvote = $comment['num_downvote'];
 			} else {
 				die("Couldn't find comment: " . $this->commentID);
 			}
@@ -53,9 +49,7 @@ class Comment {
 		if($this->commentID != -1){
 			$query = "UPDATE `comment` SET ";
 			$query .= "`comment_text` = '" . $this->comment_text . "', ";
-			$query .= "`comment_date` = '" . $this->comment_date . "', ";
-			$query .= "`num_upvote` = '" . $this->num_upvote . "', ";
-			$query .= "`num_downvote` = '" . $this->num_downvote . "' ";
+			$query .= "`comment_date` = '" . $this->comment_date . "' ";
 			$query .= "WHERE `commentID` = " . $this->commentID;
 
 			$db = GetDB();
@@ -103,6 +97,46 @@ class Comment {
 		else{
 			die("Couldn't find post for commentID: " . $this->commentID);
 		}
+	}
+
+	public function GetUserLikes(){
+
+			$query = "SELECT * FROM `user_like_comment` WHERE `commentID` = {$this->commentID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetUserDislikes(){
+
+			$query = "SELECT * FROM `user_dislike_comment` WHERE `commentID` = {$this->commentID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['userID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
 	}
 
 //----------------------------------------------ADD STUFF--------------------------------------------
