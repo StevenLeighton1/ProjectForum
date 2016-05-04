@@ -14,32 +14,17 @@
         die();
 	}
 
-	if(!empty($_POST['postID']) and !empty($_POST['topicID'])){
+	if(!empty($_POST['commentID'])){
 
-		$post = new Post($_POST['postID']);
-		$comments = $post->GetComments();
-		$topic = new Topic($_POST['topicID']);
-
-		foreach($comments as $comment){
-			$result = $comment->Delete();
-			if($result == FALSE){
-			header('location:view-account.php?userID='.$_POST['userID']);
-			die();
-		}
-		}
-		$result = $topic->RemovePost($post->postID);
+		$comment = new Comment($_POST['commentID']);
+		
+		$result = $comment->Delete();
 	
 		if($result == FALSE){
 			header('location:view-account.php?userID='.$_POST['userID']);
 			die();
 		}
 
-		$result = $post->Delete();
-		if($result == FALSE){
-			header('location:view-account.php?userID='.$_POST['userID']);
-			die();
-		}
-		
 	}
 	else{
 		header('location: view-account.php?userID='.$_POST['userID']);

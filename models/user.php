@@ -108,17 +108,18 @@ class User {
 	}
 
 	public function Save(){
+		$db = GetDB();
 		if($this->userID != -1){
 			$query = "UPDATE `user` SET ";
 			$query .= "`last_login` = '" . $this->last_login . "', ";
 			$query .= "`user_type` = '" . $this->user_type . "', ";
-			$query .= "`email` = '" . $this->email . "', ";
-			$query .= "`username` = '" . $this->username . "', ";
-			$query .= "`nickname` = '" . $this->nickname . "', ";
-			$query .= "`password` = '" . $this->password . "' ";
+			$query .= "`email` = '" . mysql_real_escape_string($this->email) . "', ";
+			$query .= "`username` = '" . mysql_real_escape_string($this->username) . "', ";
+			$query .= "`nickname` = '" . mysql_real_escape_string($this->nickname) . "', ";
+			$query .= "`password` = '" . mysql_real_escape_string($this->password) . "' ";
 			$query .= "WHERE `userID` = " . $this->userID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -397,7 +398,7 @@ class User {
 		}
 	}
 
-	public function AddCommentDislike($postID){
+	public function AddCommentDislike($commentID){
 		$query = "INSERT INTO `user_dislike_comment` (`userID`, `commentID`) VALUES ";
 		$query .="({$this->userID}," .$commentID.")";
 

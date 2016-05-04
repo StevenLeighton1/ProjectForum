@@ -46,13 +46,13 @@ class Comment {
 	}
 
 	public function Save(){
+		$db = GetDB();
 		if($this->commentID != -1){
 			$query = "UPDATE `comment` SET ";
-			$query .= "`comment_text` = '" . $this->comment_text . "', ";
-			$query .= "`comment_date` = '" . $this->comment_date . "' ";
+			$query .= "`comment_text` = '" . mysql_real_escape_string($this->comment_text). "' ";
 			$query .= "WHERE `commentID` = " . $this->commentID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -68,17 +68,73 @@ class Comment {
 		if(!filter_var($this->commentID, FILTER_VALIDATE_INT) === TRUE){
 			return; // Wrong commentID
 		}
+		$db = GetDB();
+
+		$query = "DELETE FROM `post_comment` WHERE `commentID` = {$this->commentID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete comment: " . $this->commentID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_like_comment` WHERE `commentID` = {$this->commentID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete comment: " . $this->commentID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_dislike_comment` WHERE `commentID` = {$this->commentID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete comment: " . $this->commentID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_comment` WHERE `commentID` = {$this->commentID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete comment: " . $this->commentID . " Because " . mysqli_error($db));
+		}
 
 		$query = "DELETE FROM `comment` WHERE `commentID` = {$this->commentID}";
 
-		$db = GetDB();
 		if($db->query($query) === TRUE){
 			// Updated succesfully
 		} else {
 			die("Couldn't delete comment: " . $this->commentID . " Because " . mysqli_error($db));
 		}
+
+		return true;
 	}
 //----------------------------------------------GET STUFF--------------------------------------------
+
+	public function GetUser(){
+		$db = GetDB();
+
+		$query =  "SELECT * FROM `user_comment` WHERE `commentID` = {$this->commentID}";
+
+		
+		$result = $db->query($query);
+		if($result->num_rows != 0){
+			$post = $result->fetch_array(MYSQLI_BOTH);
+
+			$post = new User($post['userID']);
+			return $post;
+		}
+		else{
+			die("Couldn't find user for commentID: " . $this->commentID);
+		}
+	}
 
 	public function GetPost(){
 		$db = GetDB();
@@ -109,7 +165,7 @@ class Comment {
 				$ret = Array();
 				while($row = $rows->fetch_array(MYSQLI_BOTH)){
 					
-					$u = new User($row['postID']);
+					$u = new User($row['userID']);
 					$ret[] = $u;
 
 				}

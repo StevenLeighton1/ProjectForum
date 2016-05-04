@@ -100,13 +100,14 @@
                     $post_user = $post->GetUser();
                 	$comments = $post->GetComments();
                 	$comment_count = count($comments);
+                    $comment_like_count = count($post->GetUserLikes());
                     $recent_comment = $post->GetLatestComment();
                 ?>
                     
                     <tr>
                         <td style="text-align:center"><?php echo $post->postID; ?></td>
-                        <td><a href="post.php?postID=<?php echo $post->postID; ?>"><?php echo $post->title; ?></a></td>
-                        <td style="text-align:center"><?php echo $post->ups; ?></td>
+                        <td><a href="view-post.php?postID=<?php echo $post->postID; ?>"><?php echo $post->title; ?></a></td>
+                        <td style="text-align:center"><?php echo $comment_like_count; ?></td>
                         <td style="text-align:center"><?php echo $comment_count; ?></td>
                         <td style="text-align:center"><?php echo '<a href="view-account.php?userID='.$post_user->userID.'">'.
                                                                    $post_user->username .'</a>' ?></td>

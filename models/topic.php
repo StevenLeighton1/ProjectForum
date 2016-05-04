@@ -44,12 +44,14 @@ class Topic {
 	}
 
 	public function Save(){
+		$db = GetDB();
+		
 		if($this->topicID != -1){
 			$query = "UPDATE `topic` SET ";
-			$query .= "`name` = '" . $this->name . "' ";
+			$query .= "`name` = '" . mysql_real_escape_string($this->name) . "' ";
 			$query .= "WHERE `topicID` = " . $this->topicID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;

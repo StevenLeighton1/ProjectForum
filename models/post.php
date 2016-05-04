@@ -54,16 +54,18 @@ class Post {
 	}
 
 	public function Save(){
+		$db = GetDB();
+
 		if($this->postID != -1){
 			$query = "UPDATE `post` SET ";
-			$query .= "`title` = '" . $this->title . "', ";
-			$query .= "`content` = '" . $this->content . "', ";
+			$query .= "`title` = '" . mysql_real_escape_string($this->title) . "', ";
+			$query .= "`content` = '" . mysql_real_escape_string($this->content) . "', ";
 			$query .= "`ups` = '" . $this->ups . "', ";
 			$query .= "`downs` = '" . $this->downs . "', ";
-			$query .= "`tags` = '" . $this->tags . "' ";
+			$query .= "`tags` = '" . mysql_real_escape_string($this->tags) . "' ";
 			$query .= "WHERE `postID` = " . $this->postID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -81,15 +83,6 @@ class Post {
 		}
 
 		$db = GetDB();
-
-		$query = "DELETE FROM `post_comment` WHERE `postID` = {$this->postID}";
-
-		if($db->query($query) === TRUE){
-			// Updated succesfully
-		} else {
-			return false;
-			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
-		}
 
 		$query = "DELETE FROM `user_post` WHERE `postID` = {$this->postID}";
 
@@ -224,7 +217,7 @@ class Post {
 				$ret = Array();
 				while($row = $rows->fetch_array(MYSQLI_BOTH)){
 					
-					$u = new User($row['postID']);
+					$u = new User($row['userID']);
 					$ret[] = $u;
 
 				}

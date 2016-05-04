@@ -108,7 +108,7 @@
                         <td style="text-align:center"><?php echo count($posts); ?></td>
                         <td style="text-align:center"><?php echo $comment_count; ?></td>
                         <td style="text-align:center"><?php if($last_post == NULL) echo 'N/A';
-                                                            else echo "<a href=post.php?post=" . $last_post->postID . ">"
+                                                            else echo "<a href=view-post.php?postID=" . $last_post->postID . ">"
                                                                         .substr($last_post->title,0,20)
                                                                         . "</a>"; ?></td>
                     </tr>
