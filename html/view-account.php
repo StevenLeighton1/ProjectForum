@@ -6,6 +6,7 @@
     session_start();
     if(empty($_SESSION['logged_in'])){
         $_SESSION['logged_in'] = false;
+        $_SESSION['user'] = new User(-1);
     }
     else if($_SESSION['logged_in'] == false){
         header("location: login.php?message=Please login first");
@@ -37,8 +38,25 @@
                 <input type="text" name="search" placeholder="Search Forum" style="float:right">
                     </li>
             
-            <li><a href="logout.php">Sign Out</a></li>
-            <?php echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>'; ?>
+            <!-- If login fails ==> open the login page
+                 If signs out   ==> open the login page -->
+            <?php if($_SESSION['logged_in'] != true){
+
+                echo '<li><a href="account.php">Register</a></li>
+                <form action="login_request.php" method="post">
+                    <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
+                    <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
+                    <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
+                </form>';
+                } 
+             else {
+                    // If logged in, replace account and form with the following:
+
+                echo '<li><a href="logout.php">Sign Out</a></li>';
+                echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>';
+
+                } //close if else
+            ?>
 
             <li style="float:left"><a href="index.php">Home</a></li>
         </ul>
@@ -108,8 +126,10 @@
                                         <td style="text-align:left; width:296px" ><?php echo $post->title; ?></td>
                                         <td style="text-align:left; width:160px"><?php echo $topic->name; ?></td>
                                         <td style="width:120px">
-                                            Last Comment:
-                                            <br><a href=""> Some_User_Name </a><br>
+                                            Last Comment:<br>
+                                            <?php if ($last_comment != NULL) {
+                                                echo '<a href="view-account.php?userID='.$last_comment->GetUser()->userID.'">'.$last_comment->GetUser()->username.'</a><br>';
+                                            } ?> 
                                             Total Comments: <?php echo count($comments); ?> </td>
                                         <td style="width:70px"><?php echo $post->created_date; ?></td>
                                         
