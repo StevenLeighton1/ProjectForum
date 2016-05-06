@@ -219,7 +219,7 @@
                                 </form>
                             <?php } ?>
 
-                        </span>
+                        </span> 
                     </h4>
                     <hr width="100%">
                     <p id="comment">
