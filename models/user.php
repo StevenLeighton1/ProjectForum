@@ -108,17 +108,18 @@ class User {
 	}
 
 	public function Save(){
+		$db = GetDB();
 		if($this->userID != -1){
 			$query = "UPDATE `user` SET ";
 			$query .= "`last_login` = '" . $this->last_login . "', ";
 			$query .= "`user_type` = '" . $this->user_type . "', ";
-			$query .= "`email` = '" . $this->email . "', ";
-			$query .= "`username` = '" . $this->username . "', ";
-			$query .= "`nickname` = '" . $this->nickname . "', ";
-			$query .= "`password` = '" . $this->password . "' ";
+			$query .= "`email` = '" . mysql_real_escape_string($this->email) . "', ";
+			$query .= "`username` = '" . mysql_real_escape_string($this->username) . "', ";
+			$query .= "`nickname` = '" . mysql_real_escape_string($this->nickname) . "', ";
+			$query .= "`password` = '" . mysql_real_escape_string($this->password) . "' ";
 			$query .= "WHERE `userID` = " . $this->userID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -188,6 +189,46 @@ class User {
 	public function GetDislikes(){
 
 			$query = "SELECT * FROM `user_dislike` WHERE `userID` = {$this->userID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetLikesComments(){
+
+			$query = "SELECT * FROM `user_like_comment` WHERE `userID` = {$this->userID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetDislikesComments(){
+
+			$query = "SELECT * FROM `user_dislike_comment` WHERE `userID` = {$this->userID}";
 
 			$db = GetDB();
 			$rows = $db->query($query);
@@ -285,6 +326,106 @@ class User {
 			}
 	}
 
+	public function GetSortedTopics($sortNum){
+			$db = GetDB();
+
+			if($sortNum == 1){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`name` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 2){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`name` DESC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 3){
+				$query = "SELECT `topic`.`topicID`, `topic`.`name`, COUNT(`topic_post`.`topicID`) as amt 
+							FROM `topic`, `topic_post` 
+							WHERE `topic`.`topicID` = `topic_post`.`topicID`
+							GROUP BY `topic_post`.`topicID`
+							ORDER BY amt DESC, `topic`.`name` DESC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 4){
+				$query = "SELECT `topic`.`topicID`, `topic`.`name`, COUNT(`topic_post`.`topicID`) as amt 
+							FROM `topic`, `topic_post`, `post_comment` 
+							WHERE `topic`.`topicID` = `topic_post`.`topicID` AND
+								  `post_comment`.`postID` = `topic_post`.`postID`
+							GROUP BY `topic_post`.`topicID`
+							ORDER BY amt DESC, `topic`.`name` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 5){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`topicID` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+
+	}
+
 //----------------------------------------------ADD STUFF--------------------------------------------
 
 	public function AddPost($postID){
@@ -332,6 +473,34 @@ class User {
 	public function AddDislike($postID){
 		$query = "INSERT INTO `user_dislike` (`userID`, `postID`) VALUES ";
 		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add dislike to user: " . $this->userID);
+		}
+	}
+
+	public function AddCommentLike($commentID){
+		$query = "INSERT INTO `user_like_comment` (`userID`, `commentID`) VALUES ";
+		$query .="({$this->userID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add like to user: " . $this->userID);
+		}
+	}
+
+	public function AddCommentDislike($commentID){
+		$query = "INSERT INTO `user_dislike_comment` (`userID`, `commentID`) VALUES ";
+		$query .="({$this->userID}," .$commentID.")";
 
 		$db = GetDB();
 		if($db->query($query) === TRUE){
@@ -393,6 +562,32 @@ class User {
 		} else {
 			return false;
 			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveCommentLike($commentID){
+		$query = "DELETE FROM `user_like_comment` WHERE `commentID` = ". $commentID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveCommentDislike($commentID){
+		$query = "DELETE FROM `user_dislike_comment` WHERE `commentID` = ". $commentID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from user: " . $this->userID);
 		}
 	}
 }

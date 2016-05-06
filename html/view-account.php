@@ -53,6 +53,7 @@
                     // If logged in, replace account and form with the following:
 
                 echo '<li><a href="logout.php">Sign Out</a></li>';
+
                 echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'" class="active">Account</a></li>';
 
                 } //close if else
@@ -101,8 +102,7 @@
                                             <a href="view-post.php?postID=<?php echo $post->postID; ?>"> <?php echo $post->title; ?> </a>
                                         </td>
                                         <td style="text-align:left; width:140px">
-                                            <a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?> </a?
-
+                                            <a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?> </a>
                                         </td>
                                         <td style="width:120px">
                                             Last Comment: <br>
@@ -123,8 +123,12 @@
                                 <?php } 
                                     else { ?>
                                         <td style="width:59px"><?php echo $post->postID; ?></td>
-                                        <td style="text-align:left; width:296px" ><?php echo $post->title; ?></td>
-                                        <td style="text-align:left; width:160px"><?php echo $topic->name; ?></td>
+                                        <td style="text-align:left; width:296px" >
+                                             <a href="view-post.php?postID=<?php echo $post->postID; ?>"> <?php echo $post->title; ?> </a>
+                                        </td>
+                                        <td style="text-align:left; width:160px">
+                                             <a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?> </a>
+                                         </td>
                                         <td style="width:137px">
                                             Last Comment:<br>
                                             <?php if ($last_comment != NULL) {
@@ -156,8 +160,10 @@
                                 <th scope="col" class="com">Post Title </th>
                                 <th scope="col" class="lastPost">Post Author</th>
                                 <th scope="col" class="other">Date</th>
-                                <?php if($user->userID == $_SESSION['user']->userID) { echo '<th scope="col" class="other">Delete</th>'; ?>
-                                <?php } else { echo '<th scope="col" class="other">Up/Down Votes</th>'; } ?>
+                                <?php if($user->userID == $_SESSION['user']->userID) { echo '<th scope="col" class="other">Delete</th>'; 
+                                 } else { echo '<th scope="col" class="other">Up/Down Votes</th>'; } 
+                                ?>
+
                             <!--   <th scope="col" class="other">Delete</th> -->
                             </tr>
                         </thead>
@@ -174,7 +180,9 @@
                             <tr>
                                 <?php if($user->userID != $_SESSION['user']->userID) { ?>
 
+
                                 <td style="width:51px"><?php echo $comment->commentID; ?></td>
+
                                 <td style="text-align:left; width:201px" >
                                     <?php echo substr($comment->comment_text,0,35); ?>
                                 </td>
@@ -212,6 +220,7 @@
                                 <td style="text-align:left; width:201px" >
                                     <a href="view-post.php?postID=<?php echo $post->postID; ?>"> <?php echo $post->title; ?> </a>
                                 </td>
+
                                     
                                 <td style="width:120px">
                                     Created by:<br>
@@ -226,6 +235,7 @@
                                 
                                 <!-- Show delete if moderator or user
                                         else just show up/down votes-->
+
                              <!--   <td style="width:65px; text-align:left">
                                     Up: <?php echo count($comment_likes); ?> <br>
                                     Down: <?php echo count($comment_dislikes); ?>

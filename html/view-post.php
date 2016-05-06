@@ -10,7 +10,15 @@
     }
 
     $post = new Post($_GET['postID']);
-    $comments = $post->GetComments();
+
+    if(empty($_GET['sort'])){
+        $comments = $post->GetComments();
+        $sort = 1;
+    }
+    else{
+        $comments = $post->GetSortedComments($_GET['sort']);
+        $sort = $_GET['sort'];
+    }
     $user_post = $post->GetUser();
     $post_likes = $post->GetUserLikes();
     $post_dislikes = $post->GetUserDislikes();
@@ -43,11 +51,11 @@
             <?php if($_SESSION['logged_in'] != true){
 
                 echo '<li><a href="account.php">Register</a></li>
-                <form action="login_request.php" method="post">
-                    <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
-                    <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
-                    <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
-                </form>';
+                        <form action="login_request.php" method="post">
+                            <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
+                            <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
+                            <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
+                        </form>';
                 } 
              else {
                     // If logged in, replace account and form with the following:
@@ -132,14 +140,20 @@
                 <!-- Start Sort Head -->
                 <h4 style="text-align:center">User Comments:</h4>
                 <div align="center">
-                <form action="#" method="GET">
+                <form action="post_comment_sort.php" method="post">
                     <select name="sort">
-                        <option value="1" selected>Most Recent</option>
-                        <option value="2">Oldest</option>
-                        <option value="3">User</option>
-                        <option value="4">Most Ups</option>
-                        <option value="5">Most Downs</option>
+                        <?php if($sort == 1) echo '<option value="1" selected>Most Recent</option>';
+                                      else echo '<option value="1">Most Recent</option>';?>
+                                <?php if($sort == 2) echo '<option value="2" selected>Oldest</option>';
+                                      else echo '<option value="2">Oldest</option>';?>
+                                <?php if($sort == 3) echo '<option value="3" selected>User</option>';
+                                      else echo '<option value="3">User</option>';?>
+                                <?php if($sort == 4) echo '<option value="4" selected>Most Ups</option>';
+                                      else echo '<option value="4">Most Ups</option>';?>
+                                <?php if($sort == 5) echo '<option value="5" selected>Most Downs</option>';
+                                      else echo '<option value="5">Most Downs</option>';?>
                     </select>
+                    <input type="hidden" name="postID" value="<?php echo $post->postID; ?>">
                     <input type="submit" value="Sort" class="btn">
                 </form>
                 
@@ -197,7 +211,14 @@
                             <?php } ?>
 
                             <!-- Delete Comment button -->
-                            <!-- <button class="btn" style="position:relative;bottom:3px;">Delete</button> -->
+                            <?php if($comment_user == $_SESSION['user']) { ?>
+                                <button class="btn" style="position:relative;bottom:3px;" form="deleteComment<?php echo $comment->commentID; ?>">Delete</button>
+                               <form action="comment_delete_post.php" method="post" id="deleteComment<?php echo $comment->commentID; ?>">
+                                    <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
+                                    <input type="hidden" value="<?php echo $comment->commentID; ?>" name="commentID">
+                                </form>
+                            <?php } ?>
+
                         </span>
                     </h4>
                     <hr width="100%">

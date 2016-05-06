@@ -44,12 +44,14 @@ class Topic {
 	}
 
 	public function Save(){
+		$db = GetDB();
+		
 		if($this->topicID != -1){
 			$query = "UPDATE `topic` SET ";
-			$query .= "`name` = '" . $this->name . "' ";
+			$query .= "`name` = '" . mysql_real_escape_string($this->name) . "' ";
 			$query .= "WHERE `topicID` = " . $this->topicID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -96,6 +98,140 @@ class Topic {
 			}
 	}
 
+	public function GetSortedPosts($sortNum){
+			$db = GetDB();
+
+			if($sortNum == 1){
+				$query = "SELECT * FROM `topic_post`,`post`
+							WHERE `topic_post`.`topicID` = {$this->topicID} AND `post`.`postID` = `topic_post`.`postID`
+							ORDER BY `post`.`title` ASC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Post($row['postID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 2){
+				$query = "SELECT * FROM `topic_post`,`post`
+							WHERE `topic_post`.`topicID` = {$this->topicID} 
+								AND `post`.`postID` = `topic_post`.`postID`
+							ORDER BY `post`.`title` DESC";
+
+				$rows = $db->query($query);
+				
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Post($row['postID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 3){
+				$query = "SELECT `post`.`postID`, COUNT(`user_like`.`postID`) as amt
+							FROM `post`,`user_like`,`topic_post`
+							WHERE `post`.`postID` = `user_like`.`postID` AND
+									`topic_post`.`topicID` = {$this->topicID} AND
+									`topic_post`.`postID` = `post`.`postID`
+							GROUP BY `user_like`.`postID`
+							ORDER BY amt DESC, `post`.`title` ASC";
+
+				$rows = $db->query($query);
+				
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Post($row['postID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 4){
+				$query = "SELECT `post`.`postID`, COUNT(`post_comment`.`postID`) as amt
+							FROM `post`,`post_comment`,`topic_post`
+							WHERE `post`.`postID` = `post_comment`.`postID` AND
+									`topic_post`.`topicID` = {$this->topicID} AND
+									`topic_post`.`postID` = `post`.`postID`
+							GROUP BY `post_comment`.`postID`
+							ORDER BY amt DESC, `post`.`title` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Post($row['postID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 5){
+				$query = "SELECT * FROM `topic_post`,`post`
+							WHERE `topic_post`.`topicID` = {$this->topicID} AND `post`.`postID` = `topic_post`.`postID`
+							ORDER BY `post`.`postID` ASC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Post($row['postID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 6){
+				$query = "SELECT * FROM `topic_post`,`post`
+							WHERE `topic_post`.`topicID` = {$this->topicID} AND `post`.`postID` = `topic_post`.`postID`
+							ORDER BY `post`.`created_date` DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Post($row['postID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+
+	}
+
 	public function GetModerators(){
 
 			$query = "SELECT * FROM `user_moderator` WHERE `topicID` = {$this->topicID}";
@@ -114,6 +250,33 @@ class Topic {
 			} else {
 				return Array();
 			}
+	}
+	
+
+	public function GetLatestPost(){
+
+			$query = "SELECT * FROM `post` ORDER BY `post`.`created_date` DESC";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+			}
+
+			foreach ($ret as $post) {
+				if($this->topicID == $post->GetTopic()->topicID){
+
+					return $post;
+				}
+			}
+
+			return NULL;
 	}
 
 //----------------------------------------------ADD STUFF--------------------------------------------
