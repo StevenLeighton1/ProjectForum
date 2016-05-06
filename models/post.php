@@ -143,6 +143,127 @@ class Post {
 			}
 	}
 
+	public function GetSortedComments($sortNum){
+			$db = GetDB();
+
+			if($sortNum == 1){
+				$query = "SELECT * 
+							FROM `post_comment`,`comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND `post_comment`.`commentID` = `comment`.`commentID`
+							ORDER BY `comment`.`comment_date` DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 2){
+				$query = "SELECT * 
+							FROM `post_comment`,`comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND `post_comment`.`commentID` = `comment`.`commentID`
+							ORDER BY `comment`.`comment_date` ASC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 3){
+				$query = "SELECT * 
+							FROM `post_comment`,`comment`,`user`,`user_comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND 
+								  `post_comment`.`commentID` = `comment`.`commentID` AND
+							      `user_comment`.`commentID` = `comment`.`commentID`
+							GROUP BY `post_comment`.`commentID`
+							ORDER BY `user`.`username` DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 4){
+				$query = "SELECT *, COUNT(`post_comment`.`commentID`) as amt
+							FROM `post_comment`,`comment`,`user_like_comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND 
+								  `post_comment`.`commentID` = `comment`.`commentID` AND
+							      `user_like_comment`.`commentID` = `comment`.`commentID`
+							GROUP BY `post_comment`.`commentID`
+							ORDER BY amt DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 5){
+				$query = "SELECT *, COUNT(`post_comment`.`commentID`) as amt
+							FROM `post_comment`,`comment`,`user_dislike_comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND 
+								  `post_comment`.`commentID` = `comment`.`commentID` AND
+							      `user_dislike_comment`.`commentID` = `comment`.`commentID`
+							GROUP BY `post_comment`.`commentID`
+							ORDER BY amt DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			
+
+	}
+
 	public function GetTopic(){
 		$db = GetDB();
 

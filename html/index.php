@@ -9,7 +9,14 @@
         $_SESSION['user'] = new User(-1); //empty user object
     }
 
-    $topics = $_SESSION['user']->GetTopics(); //get all topics
+    if(empty($_GET['sort'])){
+        $topics = $_SESSION['user']->GetTopics(); //get all topics natural order
+        $sort = 1;
+    }
+    else{
+        $topics = $_SESSION['user']->GetSortedTopics($_GET['sort']); //get all topics on particular order
+        $sort = $_GET['sort'];
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -66,18 +73,22 @@
                             echo 'Welcome to Project Forum '. $_SESSION['user']->username .'!';
                         }
                         ?>
-                        <br>
+                        <br><br>
                     <span>
                         <form action="#" method="get">
                             <select name="sort">
-                                <option value="1" selected>Topic Name (Asc)</option>
-                                <option value="2">Topic Name (Desc)</option>
-                                <option value="3">Last Updated</option>
-                                <option value="4">Most Posts</option>
-                                <option value="5">Popularity</option>
-                                <option value="6">Topic ID</option>
+                                <?php if($sort == 1) echo '<option value="1" selected>Topic Name (Asc)</option>';
+                                      else echo '<option value="1">Topic Name (Asc)</option>';?>
+                                <?php if($sort == 2) echo '<option value="2" selected>Topic Name (Desc)</option>';
+                                      else echo '<option value="2">Topic Name (Desc)</option>';?>
+                                <?php if($sort == 3) echo '<option value="3" selected>Most Posts</option>';
+                                      else echo '<option value="3">Most Posts</option>';?>
+                                <?php if($sort == 4) echo '<option value="4" selected>Most Comments</option>';
+                                      else echo '<option value="4">Most Comments</option>';?>
+                                <?php if($sort == 5) echo '<option value="5" selected>Topic ID</option>';
+                                      else echo '<option value="5">Topic ID</option>';?>
                             </select>
-                            <button type="submit" value="send" class="btn">Sort</button>
+                            <button type="submit" value="send" class="btn">Sort By</button>
                         </form>
                     </span>
                 </caption>

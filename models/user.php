@@ -326,6 +326,106 @@ class User {
 			}
 	}
 
+	public function GetSortedTopics($sortNum){
+			$db = GetDB();
+
+			if($sortNum == 1){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`name` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 2){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`name` DESC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 3){
+				$query = "SELECT `topic`.`topicID`, `topic`.`name`, COUNT(`topic_post`.`topicID`) as amt 
+							FROM `topic`, `topic_post` 
+							WHERE `topic`.`topicID` = `topic_post`.`topicID`
+							GROUP BY `topic_post`.`topicID`
+							ORDER BY amt DESC, `topic`.`name` DESC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 4){
+				$query = "SELECT `topic`.`topicID`, `topic`.`name`, COUNT(`topic_post`.`topicID`) as amt 
+							FROM `topic`, `topic_post`, `post_comment` 
+							WHERE `topic`.`topicID` = `topic_post`.`topicID` AND
+								  `post_comment`.`postID` = `topic_post`.`postID`
+							GROUP BY `topic_post`.`topicID`
+							ORDER BY amt DESC, `topic`.`name` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 5){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`topicID` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+
+	}
+
 //----------------------------------------------ADD STUFF--------------------------------------------
 
 	public function AddPost($postID){

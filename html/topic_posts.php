@@ -10,7 +10,15 @@
     }
 
     $topic = new Topic($_GET['topicID']);
-    $posts = $topic->GetPosts();
+
+    if(empty($_GET['sort'])){
+        $posts = $topic->GetPosts();
+        $sort = 1;
+    }
+    else{
+        $posts = $topic->GetSortedPosts($_GET['sort']);
+        $sort = $_GET['sort'];
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +29,6 @@
         <link rel="stylesheet" type="text/css" href="css/reset.css">
         <link rel="stylesheet" type="text/css" href="css/outline.css">
         <link rel="stylesheet" type="text/css" href="css/inputs.css">
-
 
     </head>
     <body>
@@ -69,19 +76,26 @@
                             echo '<a href="post_create.php?topicID=' . $topic->topicID . '&message=">Submit a new post!</a>';
                         }
                     ?>
-                        <br>
+                        <br><br>
                     <span>
                         <!-- Needs to reload exact page, rather than the default -->
 
-                        <form action="#" method="get">
+                        <form action="topic_post_sort.php" method="post">
                             <select name="sort">
-                                <option value="1" selected>Post Name (Asc)</option>
-                                <option value="2">Post Name (Desc)</option>
-                                <option value="3">Last Updated</option>
-                                <option value="4">Most Ups</option>
-                                <option value="5">Most Comments</option>
-                                <option value="6">Post ID</option>
+                                <?php if($sort == 1) echo '<option value="1" selected>Post Name (Asc)</option>';
+                                      else echo '<option value="1">Post Name (Asc)</option>';?>
+                                <?php if($sort == 2) echo '<option value="2" selected>Post Name (Desc)</option>';
+                                      else echo '<option value="2">Post Name (Desc)</option>';?>
+                                <?php if($sort == 3) echo '<option value="3" selected>Most Ups</option>';
+                                      else echo '<option value="3">Most Ups</option>';?>
+                                <?php if($sort == 4) echo '<option value="4" selected>Most Comments</option>';
+                                      else echo '<option value="4">Most Comments</option>';?>
+                                <?php if($sort == 5) echo '<option value="5" selected>Post ID</option>';
+                                      else echo '<option value="5">Post ID</option>';?>
+                                <?php if($sort == 6) echo '<option value="6" selected>Most Recent</option>';
+                                      else echo '<option value="6">Most Recent</option>';?>
                             </select>
+                            <input type="hidden" name="topicID" value="<?php echo $topic->topicID; ?>">
                             <button type="submit" value="send" class="btn">Sort</button>
                         </form>
                     </span>
