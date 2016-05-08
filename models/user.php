@@ -102,22 +102,24 @@ class User {
 			$this->username = $user['username'];
 			$this->password = $user['password'];
 			$this->nickname = $user['nickname'];
+			return true;
 		}
+		return false;
 	}
 
 	public function Save(){
+		$db = GetDB();
 		if($this->userID != -1){
 			$query = "UPDATE `user` SET ";
 			$query .= "`last_login` = '" . $this->last_login . "', ";
 			$query .= "`user_type` = '" . $this->user_type . "', ";
-			$query .= "`date_joined` = '" . $this->date_joined . "', ";
-			$query .= "`email` = '" . $this->email . "', ";
-			$query .= "`username` = '" . $this->username . "', ";
-			$query .= "`nickname` = '" . $this->nickname . "', ";
-			$query .= "`password` = '" . $this->password . "' ";
+			$query .= "`email` = '" . mysql_real_escape_string($this->email) . "', ";
+			$query .= "`username` = '" . mysql_real_escape_string($this->username) . "', ";
+			$query .= "`nickname` = '" . mysql_real_escape_string($this->nickname) . "', ";
+			$query .= "`password` = '" . mysql_real_escape_string($this->password) . "' ";
 			$query .= "WHERE `userID` = " . $this->userID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -204,6 +206,46 @@ class User {
 			}
 	}
 
+	public function GetLikesComments(){
+
+			$query = "SELECT * FROM `user_like_comment` WHERE `userID` = {$this->userID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetDislikesComments(){
+
+			$query = "SELECT * FROM `user_dislike_comment` WHERE `userID` = {$this->userID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
 	public function GetPosts(){
 
 			$query = "SELECT * FROM `user_post` WHERE `userID` = {$this->userID}";
@@ -254,6 +296,64 @@ class User {
 				$ret = Array();
 				while($row = $rows->fetch_array(MYSQLI_BOTH)){
 					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function SearchPosts($phrase){
+
+			$query = "SELECT * FROM post 
+						WHERE title like '%".$phrase."%'";
+
+			$ret = Array();
+			$db = GetDB();
+			$rows = $db->query($query);
+			
+			if($rows){
+				
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+					$ret[] = $u;
+
+				}
+			}
+
+			$query = "SELECT * FROM post 
+						WHERE content like '%".$phrase."%'";
+
+			$rows = $db->query($query);
+			
+			if($rows){
+				
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Post($row['postID']);
+
+					if(!in_array($u, $ret)) $ret[] = $u;
+
+				}
+			}
+
+			return $ret;
+	}
+
+	public function GetTopics(){
+
+			$query = "SELECT * FROM `topic`";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
 					$u = new Topic($row['topicID']);
 					$ret[] = $u;
 
@@ -264,7 +364,299 @@ class User {
 			}
 	}
 
+	public function GetSortedTopics($sortNum){
+			$db = GetDB();
+
+			if($sortNum == 1){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`name` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 2){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`name` DESC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 3){
+				$query = "SELECT `topic`.`topicID`, `topic`.`name`, COUNT(`topic_post`.`topicID`) as amt 
+							FROM `topic`, `topic_post` 
+							WHERE `topic`.`topicID` = `topic_post`.`topicID`
+							GROUP BY `topic_post`.`topicID`
+							ORDER BY amt DESC, `topic`.`name` DESC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 4){
+				$query = "SELECT `topic`.`topicID`, `topic`.`name`, COUNT(`topic_post`.`topicID`) as amt 
+							FROM `topic`, `topic_post`, `post_comment` 
+							WHERE `topic`.`topicID` = `topic_post`.`topicID` AND
+								  `post_comment`.`postID` = `topic_post`.`postID`
+							GROUP BY `topic_post`.`topicID`
+							ORDER BY amt DESC, `topic`.`name` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 5){
+				$query = "SELECT * FROM `topic` ORDER BY `topic`.`topicID` ASC";
+
+				$rows = $db->query($query);
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Topic($row['topicID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+
+	}
+
+	
+
 //----------------------------------------------ADD STUFF--------------------------------------------
+
+	public function AddPost($postID){
+		$query = "INSERT INTO `user_post` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add post to user: " . $this->userID);
+		}
+	}
+
+	public function AddComment($commentID){
+		$query = "INSERT INTO `user_comment` (`userID`, `commentID`) VALUES ";
+		$query .="({$this->userID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add comment to user: " . $this->userID);
+		}
+	}
+
+	public function AddLike($postID){
+		$query = "INSERT INTO `user_like` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add like to user: " . $this->userID);
+		}
+	}
+
+	public function AddDislike($postID){
+		$query = "INSERT INTO `user_dislike` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add dislike to user: " . $this->userID);
+		}
+	}
+
+	public function AddCommentLike($commentID){
+		$query = "INSERT INTO `user_like_comment` (`userID`, `commentID`) VALUES ";
+		$query .="({$this->userID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add like to user: " . $this->userID);
+		}
+	}
+
+	public function AddCommentDislike($commentID){
+		$query = "INSERT INTO `user_dislike_comment` (`userID`, `commentID`) VALUES ";
+		$query .="({$this->userID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add dislike to user: " . $this->userID);
+		}
+	}
+
+	public function AddSubscribe($postID){
+		$query = "INSERT INTO `user_subscribe` (`userID`, `postID`) VALUES ";
+		$query .="({$this->userID}," .$postID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add post to user: " . $this->userID);
+		}
+	}
+
+//----------------------------------------------DELETE STUFF--------------------------------------------
+	public function RemovePost($postID){
+		$query = "DELETE FROM `user_post` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveComment($commentID){
+		$query = "DELETE FROM `user_comment` WHERE `commentID` = ". $commentID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveLike($postID){
+		$query = "DELETE FROM `user_like` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveDislike($postID){
+		$query = "DELETE FROM `user_dislike` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove post from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveCommentLike($commentID){
+		$query = "DELETE FROM `user_like_comment` WHERE `commentID` = ". $commentID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveCommentDislike($commentID){
+		$query = "DELETE FROM `user_dislike_comment` WHERE `commentID` = ". $commentID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from user: " . $this->userID);
+		}
+	}
+
+	public function RemoveSubscribe($postID){
+		$query = "DELETE FROM `user_subscribe` WHERE `postID` = ". $postID ." AND `userID` = {$this->userID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove subscribe from user: " . $this->userID);
+		}
+	}
 }
 
 ?>

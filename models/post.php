@@ -54,17 +54,18 @@ class Post {
 	}
 
 	public function Save(){
+		$db = GetDB();
+
 		if($this->postID != -1){
 			$query = "UPDATE `post` SET ";
-			$query .= "`title` = '" . $this->title . "', ";
-			$query .= "`content` = '" . $this->content . "', ";
-			$query .= "`created_date` = '" . $this->created_date . "', ";
+			$query .= "`title` = '" . mysql_real_escape_string($this->title) . "', ";
+			$query .= "`content` = '" . mysql_real_escape_string($this->content) . "', ";
 			$query .= "`ups` = '" . $this->ups . "', ";
 			$query .= "`downs` = '" . $this->downs . "', ";
-			$query .= "`tags` = '" . $this->tags . "' ";
+			$query .= "`tags` = '" . mysql_real_escape_string($this->tags) . "' ";
 			$query .= "WHERE `postID` = " . $this->postID;
 
-			$db = GetDB();
+			
 			if($db->query($query) === TRUE){
 				// Updated succesfully
 				return TRUE;
@@ -81,14 +82,54 @@ class Post {
 			return; // Wrong postID
 		}
 
-		$query = "DELETE FROM `post` WHERE `postID` = {$this->postID}";
-
 		$db = GetDB();
+
+		$query = "DELETE FROM `user_post` WHERE `postID` = {$this->postID}";
+
 		if($db->query($query) === TRUE){
 			// Updated succesfully
 		} else {
+			return false;
 			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
 		}
+
+		$query = "DELETE FROM `user_subscribe` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_like` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `user_dislike` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		$query = "DELETE FROM `post` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
+		return true;
 	}
 //----------------------------------------------GET STUFF--------------------------------------------
 	public function GetComments(){
@@ -109,6 +150,127 @@ class Post {
 			} else {
 				return Array();
 			}
+	}
+
+	public function GetSortedComments($sortNum){
+			$db = GetDB();
+
+			if($sortNum == 1){
+				$query = "SELECT * 
+							FROM `post_comment`,`comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND `post_comment`.`commentID` = `comment`.`commentID`
+							ORDER BY `comment`.`comment_date` DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 2){
+				$query = "SELECT * 
+							FROM `post_comment`,`comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND `post_comment`.`commentID` = `comment`.`commentID`
+							ORDER BY `comment`.`comment_date` ASC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 3){
+				$query = "SELECT * 
+							FROM `post_comment`,`comment`,`user`,`user_comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND 
+								  `post_comment`.`commentID` = `comment`.`commentID` AND
+							      `user_comment`.`commentID` = `comment`.`commentID`
+							GROUP BY `post_comment`.`commentID`
+							ORDER BY `user`.`username` DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 4){
+				$query = "SELECT *, COUNT(`post_comment`.`commentID`) as amt
+							FROM `post_comment`,`comment`,`user_like_comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND 
+								  `post_comment`.`commentID` = `comment`.`commentID` AND
+							      `user_like_comment`.`commentID` = `comment`.`commentID`
+							GROUP BY `post_comment`.`commentID`
+							ORDER BY amt DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			else if($sortNum == 5){
+				$query = "SELECT *, COUNT(`post_comment`.`commentID`) as amt
+							FROM `post_comment`,`comment`,`user_dislike_comment`
+							WHERE `post_comment`.`postID` = {$this->postID} AND 
+								  `post_comment`.`commentID` = `comment`.`commentID` AND
+							      `user_dislike_comment`.`commentID` = `comment`.`commentID`
+							GROUP BY `post_comment`.`commentID`
+							ORDER BY amt DESC";
+
+				$rows = $db->query($query);
+
+				if($rows){
+					$ret = Array();
+					while($row = $rows->fetch_array(MYSQLI_BOTH)){
+						
+						$u = new Comment($row['commentID']);
+						$ret[] = $u;
+
+					}
+					return $ret;
+				} else {
+					return Array();
+				}
+			}
+			
+
 	}
 
 	public function GetTopic(){
@@ -149,7 +311,103 @@ class Post {
 		}
 	}
 
+	public function GetLatestComment(){
+
+			$query = "SELECT * FROM `comment` ORDER BY `comment`.`comment_date` DESC";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new Comment($row['commentID']);
+					$ret[] = $u;
+
+				}
+			}
+
+			foreach ($ret as $comment) {
+				if($this->postID == $comment->GetPost()->postID){
+
+					return $comment;
+				}
+			}
+
+			return NULL;
+	}
+
+	public function GetUserLikes(){
+
+			$query = "SELECT * FROM `user_like` WHERE `postID` = {$this->postID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['userID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
+	public function GetUserDislikes(){
+
+			$query = "SELECT * FROM `user_dislike` WHERE `postID` = {$this->postID}";
+
+			$db = GetDB();
+			$rows = $db->query($query);
+			if($rows){
+				$ret = Array();
+				while($row = $rows->fetch_array(MYSQLI_BOTH)){
+					
+					$u = new User($row['userID']);
+					$ret[] = $u;
+
+				}
+				return $ret;
+			} else {
+				return Array();
+			}
+	}
+
 //----------------------------------------------ADD STUFF--------------------------------------------
+
+	public function AddComment($commentID){
+		$query = "INSERT INTO `post_comment` (`postID`, `commentID`) VALUES ";
+		$query .="({$this->postID}," .$commentID.")";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			// Created succesfully
+			return true;
+		} else {
+			return false;
+			die("Couldn't add comment to post: " . $this->postID);
+		}
+	}
+
+//----------------------------------------------DELETE STUFF--------------------------------------------
+
+	public function RemoveComment($commentID){
+		$query = "DELETE FROM `post_comment` WHERE `postID` = ". $commentID ." AND `postID` = {$this->postID}";
+
+		$db = GetDB();
+		if($db->query($query) === TRUE){
+			return true;
+			// Removed succesfully
+		} else {
+			return false;
+			die("Couldn't remove comment from post: " . $this->postID);
+		}
+	}
+
 }
 
 ?>
