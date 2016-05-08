@@ -34,9 +34,11 @@
     <body>
         <ul>
             <li>
-                <a href="#" class="btn" style="margin-right:16px">Search</a>
-                <input type="text" name="search" placeholder="Search Forum" style="float:right">
-                    </li>
+                <form action="search_transfer.php" method="post">
+                    <a><button type="submit" class="subBtn"></button>Search</a></li>
+                    <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                </form> 
+            </li>
             
             <!-- If login fails ==> open the login page
                  If signs out   ==> open the login page -->
@@ -65,7 +67,11 @@
         <div class="container">
             <h3>Project Forum</h3>
             <div class="content">
-                <h2><?php echo $user->username; ?>'s Account</h2>
+                <h2><?php if($user->nickname == NULL) echo $user->username."'s Account";
+                            else
+                                echo $user->nickname."'s Account (".$user->username.")"; ?>
+
+                </h2>
                 <div class="centerframe">
                     
                     <!-- Show only if your account -->
@@ -80,7 +86,7 @@
                                 <th scope="col" class="id">Post ID</th>
                                 <th scope="col" class="title">Post Title </th>
                                 <th scope="col" class="sub">Topic</th>
-                                <th scope="col" class="lastPost">Comments</th>
+                                <th scope="col" class="lastPost">Latest Comment</th>
                                 <th scope="col" class="other">Date Created</th>
                                 <?php if($user->userID == $_SESSION['user']->userID) echo '<th scope="col" class="other">Delete</th>';?>
                             </tr>
@@ -263,37 +269,73 @@
                     <!-- Start User's Subscribed Table -->
                     <table class="scroll">
                         <caption>Subscribed</caption>
-                        <thead >
+                        <thead>
                             <tr>
                                 <th scope="col" class="id">Post ID</th>
                                 <th scope="col" class="title">Post Title </th>
                                 <th scope="col" class="sub">Topic</th>
-                                <th scope="col" class="lastPost">Post Author</th>
-                                <th scope="col" class="other">Last Update</th>
-                                <th scope="col" class="other">Status</th>
+                                <th scope="col" class="lastPost">Latest Comment</th>
+                                <th scope="col" class="other">Date Created</th>
+                                <?php if($user->userID == $_SESSION['user']->userID) echo '<th scope="col" class="other">Delete</th>';?>
                             </tr>
                         </thead>
                         <tbody>
                             
                             <!-- Need to adjust the widths of the table columns at least once -->
+
+                            <?php foreach ($user_subscribes as $post) {
+                                $topic = $post->GetTopic();
+                                $comments = $post->GetComments();
+                                $last_comment = $post->GetLatestComment();
+                            ?>
                             <tr>
-                                <td style="width:51px">0</td>
-                                <td style="text-align:left;width:262px">Nonexisting Post</td>
-                                <td style="text-align:left;width:140px">Nonexisting Topic</td>
-                                <td style="width:120px">
-                                    Created by:<br>
-                                    <a href="">Some_User_Name</a><br>
-                                    on date_goes_here
-                                <td style="width:80px">N/A</td>
-                                
-                                <!-- If not your profile, will tell you if you are subscribed-->
-                                <!-- If your profile, you can unsubscribe-->
-                                <td style="width:65px">
-                                    <button class="btn" style="float:left;font-size:11px" onclick="location.href='#'">
-                                        Remove <!--Follow--><btn>
-                                </td>
+                                <?php if($user->userID == $_SESSION['user']->userID) { ?>
+
+                                        <td style="width:51px"><?php echo $post->postID; ?></td>
+                                        <td style="text-align:left; width:262px" >
+                                            <a href="view-post.php?postID=<?php echo $post->postID; ?>"> <?php echo $post->title; ?> </a>
+                                        </td>
+                                        <td style="text-align:left; width:140px">
+                                            <a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?> </a>
+                                        </td>
+                                        <td style="width:120px">
+                                            Last Comment: <br>
+                                            <?php if ($last_comment != NULL) {
+                                                echo '<a href="view-account.php?userID='.$last_comment->GetUser()->userID.'">'.$last_comment->GetUser()->username.'</a><br>';
+                                            } ?> 
+                                            Total Comments: <?php echo count($comments); ?> </td>
+                                        <td style="width:80px"><?php echo $post->created_date; ?></td>
+                                        <td style="width:80px">
+                                                <form action="user_unsubscribe.php" method="post">
+                                                    <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
+                                                    <input type="hidden" value="<?php echo $user->userID; ?>" name="userID">
+                                                    <input type="hidden" value="account" name="return">
+                                                    <button type=submit class="btn">Remove</button>
+                                                 </form>
+                                        </td>
+                                <?php } 
+                                    else { ?>
+                                        <td style="width:59px"><?php echo $post->postID; ?></td>
+                                        <td style="text-align:left; width:296px" >
+                                             <a href="view-post.php?postID=<?php echo $post->postID; ?>"> <?php echo $post->title; ?> </a>
+                                        </td>
+                                        <td style="text-align:left; width:160px">
+                                             <a href="topic_posts.php?topicID=<?php echo $topic->topicID; ?>"><?php echo $topic->name; ?> </a>
+                                         </td>
+                                        <td style="width:137px">
+                                            Last Comment:<br>
+                                            <?php if ($last_comment != NULL) {
+                                                echo '<a href="view-account.php?userID='.$last_comment->GetUser()->userID.'">'.$last_comment->GetUser()->username.'</a><br>';
+                                            } ?> 
+                                            Total Comments: <?php echo count($comments); ?> </td>
+                                        <td style="width:70px"><?php echo $post->created_date; ?></td>
+                                        
+
+                                <?php } //close if ?>
+
                             </tr>
-                         
+                            <?php } //end for loop ?>
+
                         </tbody>
                     </table>
                     <!-- End User's Subscribed Table -->

@@ -93,6 +93,15 @@ class Post {
 			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
 		}
 
+		$query = "DELETE FROM `user_subscribe` WHERE `postID` = {$this->postID}";
+
+		if($db->query($query) === TRUE){
+			// Updated succesfully
+		} else {
+			return false;
+			die("Couldn't delete post: " . $this->postID . " Because " . mysqli_error($db));
+		}
+
 		$query = "DELETE FROM `user_like` WHERE `postID` = {$this->postID}";
 
 		if($db->query($query) === TRUE){

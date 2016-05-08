@@ -22,9 +22,11 @@
     <body>
         <ul>
             <li>
-                <a href="#" class="btn" style="margin-right:16px">Search</a>
-                <input type="text" name="search" placeholder="Search Forum" style="float:right">
-                    </li>
+                <form action="search_transfer.php" method="post">
+                    <a><button type="submit" class="subBtn"></button>Search</a></li>
+                    <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                </form> 
+            </li>
             
             <li><a href="account.php" class="active">Register</a></li>
                 <form action="login_request.php" method="post">

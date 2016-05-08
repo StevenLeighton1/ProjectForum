@@ -9,15 +9,11 @@
         $_SESSION['user'] = new User(-1);
     }
 
-    $topic = new Topic($_GET['topicID']);
-
-    if(empty($_GET['sort'])){
-        $posts = $topic->GetPosts();
-        $sort = 1;
+    if(empty($_GET['search'])){
+        $posts = NULL;
     }
     else{
-        $posts = $topic->GetSortedPosts($_GET['sort']);
-        $sort = $_GET['sort'];
+        $posts = $_SESSION['user']->SearchPosts(htmlspecialchars_decode($_GET['search']));
     }
 ?>
 <!DOCTYPE html>
@@ -71,36 +67,9 @@
             <table>
                 <caption>
                     <?php
-                        if($_SESSION['logged_in'] != true){
-                            echo 'Please sign in to create a post or comment.';
-                        }
-                        else{
-                            echo '<a href="post_create.php?topicID=' . $topic->topicID . '&message=">Submit a new post!</a>';
-                        }
+                        echo "Displaying " . count($posts) . " results";
                     ?>
                         <br><br>
-                    <span>
-                        <!-- Needs to reload exact page, rather than the default -->
-
-                        <form action="topic_post_sort.php" method="post">
-                            <select name="sort">
-                                <?php if($sort == 1) echo '<option value="1" selected>Post Name (Asc)</option>';
-                                      else echo '<option value="1">Post Name (Asc)</option>';?>
-                                <?php if($sort == 2) echo '<option value="2" selected>Post Name (Desc)</option>';
-                                      else echo '<option value="2">Post Name (Desc)</option>';?>
-                                <?php if($sort == 3) echo '<option value="3" selected>Most Ups</option>';
-                                      else echo '<option value="3">Most Ups</option>';?>
-                                <?php if($sort == 4) echo '<option value="4" selected>Most Comments</option>';
-                                      else echo '<option value="4">Most Comments</option>';?>
-                                <?php if($sort == 5) echo '<option value="5" selected>Post ID</option>';
-                                      else echo '<option value="5">Post ID</option>';?>
-                                <?php if($sort == 6) echo '<option value="6" selected>Most Recent</option>';
-                                      else echo '<option value="6">Most Recent</option>';?>
-                            </select>
-                            <input type="hidden" name="topicID" value="<?php echo $topic->topicID; ?>">
-                            <button type="submit" value="send" class="btn">Sort</button>
-                        </form>
-                    </span>
                 </caption>
                 <tr>
                     <th scope="col" class="id"> Post ID</th>
@@ -112,12 +81,13 @@
                 </tr>
 
                 <!-- Go through each post -->
-                <?php foreach ($posts as $post) { 
-                    $post_user = $post->GetUser();
-                	$comments = $post->GetComments();
-                	$comment_count = count($comments);
-                    $comment_like_count = count($post->GetUserLikes());
-                    $recent_comment = $post->GetLatestComment();
+                <?php if($posts != NULL) {
+                    foreach ($posts as $post) { 
+                        $post_user = $post->GetUser();
+                    	$comments = $post->GetComments();
+                    	$comment_count = count($comments);
+                        $comment_like_count = count($post->GetUserLikes());
+                        $recent_comment = $post->GetLatestComment();
                 ?>
                     
                     <tr>
@@ -131,7 +101,7 @@
                                                             else echo substr($recent_comment->comment_text,0,20); ?></td>
                     </tr>
                 
-                <?php } ?>
+                <?php } } // end foreach and if ?>
                 
             </table>
         </div>

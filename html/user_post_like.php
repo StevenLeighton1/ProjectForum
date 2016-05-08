@@ -17,10 +17,8 @@
 
 		$user = new User($_POST['userID']);
 		$post = new Post($_POST['postID']);
-		$post_likes = $post->GetUserLikes();
-		$post_dislikes = $post->GetUserDislikes();
-		$user_liked = in_array($_SESSION['user'], $post_likes);
-		$user_disliked = in_array($_SESSION['user'], $post_dislikes);
+		$user_liked = in_array($post, $user->GetLikes());
+		$user_disliked = in_array($post, $user->GetDislikes());
 
 		if($user_disliked){
 			$result = $user->RemoveDislike($_POST['postID']);

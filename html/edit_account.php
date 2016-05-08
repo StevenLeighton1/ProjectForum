@@ -23,12 +23,29 @@
     <body>
         <ul>
             <li>
-                <a href="#" class="btn" style="margin-right:16px">Search</a>
-                <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                <form action="search_transfer.php" method="post">
+                    <a><button type="submit" class="subBtn"></button>Search</a></li>
+                    <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                </form> 
             </li>
             
-            <li><a href="logout.php">Sign Out</a></li>
-            <li><a href="view-account.php">Account</a></li>
+            <?php if($_SESSION['logged_in'] != true){
+
+                echo '<li><a href="account.php">Register</a></li>
+                <form action="login_request.php" method="post">
+                    <li><a><button type="submit" class="subBtn"></button>Sign In</a></li>
+                    <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
+                    <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
+                </form>';
+                } 
+             else {
+                    // If logged in, replace account and form with the following:
+
+                echo '<li><a href="logout.php">Sign Out</a></li>';
+                echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>';
+
+                } //close if else
+            ?>
 
             <li style="float:left"><a href="index.php">Home</a></li>
         </ul>

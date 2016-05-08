@@ -26,9 +26,11 @@
     <body>
         <ul>
             <li>
-                <a href="#" class="btn" style="margin-right:16px">Search</a>
-                <input type="text" name="search" placeholder="Search Forum" style="float:right">
-                    </li>
+                <form action="search_transfer.php" method="post">
+                    <a><button type="submit" class="subBtn"></button>Search</a></li>
+                    <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                </form> 
+            </li>
             
             <li><a href="logout.php">Sign Out</a></li>
             <?php echo '<li><a href="view-account.php?userID='.$_SESSION['user']->userID.'">Account</a></li>'; ?>

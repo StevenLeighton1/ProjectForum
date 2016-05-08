@@ -14,9 +14,11 @@
     <body>
         <ul>
             <li>
-                <a href="#" class="btn" style="margin-right:16px">Search</a>
-                <input type="text" name="search" placeholder="Search Forum" style="float:right">
-                    </li>
+                <form action="search_transfer.php" method="post">
+                    <a><button type="submit" class="subBtn"></button>Search</a></li>
+                    <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                </form> 
+            </li>
             
             <!-- If logged in, replace account and form with the following:
              <li><a href="login.html">Sign Out</a></li>

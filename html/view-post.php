@@ -22,8 +22,9 @@
     $user_post = $post->GetUser();
     $post_likes = $post->GetUserLikes();
     $post_dislikes = $post->GetUserDislikes();
-    $user_liked = in_array($_SESSION['user'], $post_likes);
-    $user_disliked = in_array($_SESSION['user'], $post_dislikes);
+    $user_liked = in_array($post, $_SESSION['user']->GetLikes());
+    $user_disliked = in_array($post, $_SESSION['user']->GetDislikes());
+    $user_subscribed = in_array($post,$_SESSION['user']->GetSubscribes() );
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +43,10 @@
     <body>
         <ul>
             <li>
-                <a href="#" class="btn" style="margin-right:16px">Search</a>
-                <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                <form action="search_transfer.php" method="post">
+                    <a><button type="submit" class="subBtn"></button>Search</a></li>
+                    <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                </form>  
             </li>
         
             <!-- If login fails ==> open the login page
@@ -93,7 +96,22 @@
                                   <button class="btn">Delete Post</button> -->
                          
                          <!-- Other's posts -->
-                            <button class="btn">Subscribe</button>
+
+                         <?php if(!$user_subscribed) { ?>
+                         <form action="user_subscribe.php" method="post">
+                            <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
+                            <input type="hidden" value="<?php echo $_SESSION['user']->userID; ?>" name="userID">
+                            <input type="hidden" value="post" name="return">
+                            <button type=submit class="btn">Subscribe</button>
+                         </form>
+                        <?php } else { ?>
+                            <form action="user_unsubscribe.php" method="post">
+                                <input type="hidden" value="<?php echo $post->postID; ?>" name="postID">
+                                <input type="hidden" value="<?php echo $_SESSION['user']->userID; ?>" name="userID">
+                                <input type="hidden" value="post" name="return">
+                                <button type=submit class="btn">Unsubscribe</button>
+                             </form>
+                        <?php } ?>
                         </span>
                         <br><br><br>
                         
