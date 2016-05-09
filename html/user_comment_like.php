@@ -17,10 +17,9 @@
 
 		$user = new User($_POST['userID']);
 		$comment = new Comment($_POST['commentID']);
-		$comment_likes = $comment->GetUserLikes();
-		$comment_dislikes = $comment->GetUserDislikes();
-		$user_liked = in_array($_SESSION['user'], $comment_likes);
-		$user_disliked = in_array($_SESSION['user'], $comment_dislikes);
+
+		$user_liked = in_array($comment, $user->GetLikesComments());
+		$user_disliked = in_array($comment, $user->GetDislikesComments());
 
 		if($user_disliked){
 			$result = $user->RemoveCommentDislike($_POST['commentID']);

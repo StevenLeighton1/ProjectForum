@@ -216,7 +216,7 @@ class User {
 				$ret = Array();
 				while($row = $rows->fetch_array(MYSQLI_BOTH)){
 					
-					$u = new Post($row['postID']);
+					$u = new Comment($row['commentID']);
 					$ret[] = $u;
 
 				}
@@ -236,7 +236,7 @@ class User {
 				$ret = Array();
 				while($row = $rows->fetch_array(MYSQLI_BOTH)){
 					
-					$u = new Post($row['postID']);
+					$u = new Comment($row['commentID']);
 					$ret[] = $u;
 
 				}

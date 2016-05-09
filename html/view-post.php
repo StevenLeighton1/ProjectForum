@@ -190,8 +190,8 @@
                         $comment_user = $comment->GetUser();
                         $comment_likes = $comment->GetUserLikes();
                         $comment_dislikes = $comment->GetUserDislikes();
-                        $user_liked_comment = in_array($_SESSION['user'], $comment_likes);
-                        $user_disliked_comment = in_array($_SESSION['user'], $comment_dislikes);
+                        $user_liked_comment = in_array($comment, $_SESSION['user']->GetLikesComments());
+                        $user_disliked_comment = in_array($comment, $_SESSION['user']->GetDislikesComments());
 
                         echo '<h4><a href="view-account.php?userID='.$comment_user->userID.'">'.$comment_user->username.'</a>';
                         echo ' on '. $comment->comment_date;
