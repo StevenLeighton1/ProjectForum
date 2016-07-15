@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Forum</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+            
+            <link rel="stylesheet" type="text/css" href="css/reset.css">
+            <link rel="stylesheet" type="text/css" href="css/inputs.css">
+            <link rel="stylesheet" type="text/css" href="css/outline.css">
+            <link rel="stylesheet" type="text/css" href="css/center_form.css">
+                
+    </head>
+    <body>
+        <ul>
+            <li>
+                <a href="#" class="btn" style="margin-right:16px">Search</a>
+                <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                    </li>
+            
+            <!-- If logged in, replace account and form with the following:
+                <li><a href="login.html">Sign Out</a></li>
+                <li><a href="view-account.html">Account</a></li>
+             
+             -->
+            
+            <li><a href="account.html" class="btn" style="margin-right:10px">Register</a></li>
+          <!--  <li><a href="login.html">Sign In</a></li> -->
+          
+          <!-- If login fails ==> open the login page
+               If signs out   ==> open the login page -->
+            <form action="#" method="post">
+                <li><input type="submit" value="Sign In" class="btn" style="float:right"></li>
+                <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
+                <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
+            </form>
+            <li style="float:left"><a href="index.html">Index</a></li>
+        </ul>
+        
+        <div class="container">
+            <h3>Project Forum</h3>
+            <div class="content">
+                <h2>/User/'s Account</h2>
+                <div class="centerframe">
+                    
+                    <!-- Show only if your account -->
+                    <h1><a href="account.html">Edit Credentials</a></h1>
+                    
+                    <hr style="width:850px">
+                    <!---- Start User's Posts Table ----->
+                    <table class="scroll">
+                        <caption>/User/'s Posts</caption>
+                        <thead style="display:table-header-group">
+                            <tr>
+                                <th scope="col" class="id">Post ID</th>
+                                <th scope="col" class="title">Post Title </th>
+                                <th scope="col" class="sub">Topic</th>
+                                <th scope="col" class="lastPost">Comments</th>
+                                <th scope="col" class="other">Date Created</th>
+                                <th scope="col" class="other">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <!-- Need to adjust the widths of the table columns at least once -->
+                            <tr>
+                                <td style="width:51px">0</td>
+                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
+                                <td style="text-align:left; width:140px">Nonexisting Topic</td>
+                                <td style="width:120px">
+                                    Last Comment:
+                                    <br><a href=""> Some_User_Name </a><br>
+                                    Total Comments: ### </td>
+                                <td style="width:80px">N/A</td>
+                                <td style="width:80px">
+                                    <button class="btn" style="float:left"  onclick="location.href='#'">Delete<btn>
+                                        </td>
+                            </tr>
+                        
+                        </tbody>
+                    </table>
+                    <!---- End User's Posts Table ----->
+                    <br>
+                    <hr style="width:850px">
+                    <!---- Start User's Comments Table ----->
+                    <table class="scroll">
+                        <caption>/User/'s Comments</caption>
+                            <tr>
+                                <th scope="col" class="id">Comment ID</th>
+                                <th scope="col" class="com">Comment</th>
+                                <th scope="col" class="com">Post Title </th>
+                                <th scope="col" class="lastPost">Post Author</th>
+                                <th scope="col" class="other">Date</th>
+                                <th scope="col" class="other">Up/Down Votes</th>
+                                <!-- Show delete if moderator or user
+                                 else just show up/down votes
+                                 
+                                 may change this to last update too, don't know yet
+                                 -->
+                            <!--   <th scope="col" class="other">Delete</th> -->
+                            </tr>
+                        <tbody>
+                            
+                            <!-- Need to adjust the widths of the table columns at least once -->
+                            <tr>
+                                <td style="width:51px">0</td>
+                                <td style="text-align:left; width:200px" >Nonexisting Comment</td>
+                                <td style="text-align:left; width:200px" >Nonexisting Post</td>
+                                    
+                                <td style="width:120px">
+                                    Created by:<br>
+                                    <a href="">Some_User_Name</a><br>
+                                    on date_goes_here
+                                    
+                                <td style="width:80px">
+                                    Created on: <br>
+                                    Date_goes_here
+                                    </td>
+                                
+                                <!-- Show delete if moderator or user
+                                        else just show up/down votes-->
+                                <td style="width:80px; text-align:left">
+                                    <!--  <button class="btn" style="float:left"  onclick="location.href='#'">
+                                     Delete<btn>  -->
+                                    Up: ## <br>
+                                    Down: ##
+                                </td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!---- End User's Comments Table ----->
+                    <br>
+                    <hr style="width:850px">
+                    <!---- Start User's Subscribed Table ----->
+                    <table class="scroll">
+                        <caption>/User/'s Subscribed</caption>
+                        <thead style="display:table-header-group">
+                            <tr>
+                                <th scope="col" class="id">Post ID</th>
+                                <th scope="col" class="title">Post Title </th>
+                                <th scope="col" class="sub">Topic</th>
+                                <th scope="col" class="lastPost">Post Author</th>
+                                <th scope="col" class="other">Last Update</th>
+                                <th scope="col" class="other">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <!-- Need to adjust the widths of the table columns at least once -->
+                            <tr>
+                                <td style="width:51px">0</td>
+                                <td style="text-align:left; width:262px" >Nonexisting Post</td>
+                                <td style="text-align:left;width:140px">Nonexisting Topic</td>
+                                <td style="width:120px">
+                                    Created by:<br>
+                                    <a href="">Some_User_Name</a><br>
+                                    on date_goes_here
+                                <td style="width:80px">N/A</td>
+                                
+                                <!-- If not your profile, will tell you if you are subscribed-->
+                                <!-- If your profile, you can unsubscribe-->
+                                <td style="width:80px">
+                                    <button class="btn" style="float:left" onclick="location.href='#'">
+                                        Remove <!--Follow--><btn>
+                                        </td>
+                            </tr>
+                         
+                        </tbody>
+                    </table>
+                    <!---- End User's Subscribed Table ----->
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>Copyright &copy; Adam Bucknell &amp; Steven Leighton</footer>
+</html>

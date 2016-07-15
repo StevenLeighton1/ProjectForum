@@ -22,6 +22,7 @@
     <body>
         <ul>
             <li>
+<<<<<<< Updated upstream:html/account.php
                 <form action="search_transfer.php" method="post">
                     <a><button type="submit" class="subBtn"></button>Search</a></li>
                     <input type="text" name="search" placeholder="Search Forum" style="float:right">
@@ -35,6 +36,28 @@
                     <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
                 </form>
             <li style="float:left"><a href="index.php">Home</a></li>
+=======
+                <a href="#" class="btn" style="margin-right:16px">Search</a>
+                <input type="text" name="search" placeholder="Search Forum" style="float:right">
+                    </li>
+            
+            <!-- If logged in, replace account and form with the following:
+             <li><a href="login.html">Sign Out</a></li>
+             <li><a href="view-account.html">Account</a></li>
+             -->
+            
+            <li><a href="account.html" class="btn" style="margin-right:10px">Register</a></li>
+            <!--  <li><a href="login.html">Sign In</a></li> -->
+            
+            <!-- If login fails ==> open the login page
+             If signs out   ==> open the login page -->
+            <form action="#" method="post">
+                <li><input type="submit" value="Sign In" class="btn" style="float:right"></li>
+                <li><input type="password" name="pass" placeholder="Password" style="float:right;width:8%;"></li>
+                <li><input type="text" name="user" placeholder="Username" style="float:right;width:8%;margin-right:0px"></li>
+            </form>
+            <li style="float:left"><a href="index.html">Index</a></li>
+>>>>>>> Stashed changes:html/account.html
         </ul>
         
         <div class="container">

@@ -141,6 +141,7 @@ ul li a{
     background-color:#333;
 }
 
+<<<<<<< Updated upstream
 ul li .subBtn{
     position: fixed;
     height:35px;
@@ -149,6 +150,14 @@ ul li .subBtn{
     opacity:0;
     top:0;
     cursor:pointer;
+=======
+ul form{
+    margin-right:3px;
+}
+ul form input[type=submit]{
+    height:30px;
+    margin-right:3px;
+>>>>>>> Stashed changes
 }
 
 ul li a:not(.btn){
